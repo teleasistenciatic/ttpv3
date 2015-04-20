@@ -54,8 +54,6 @@
             </intent-filter>
         </activity>
 
-
-
         <!-- Actividad principal Modo Offline -->
         <activity
             android:name=".act.main.actMain"
@@ -106,6 +104,7 @@
 
 
         <!-- Actividad de opciones de usuario -->
+
         <activity
             android:name=".act.user.actUserOptions"
             android:label="@string/title_activity_act_user_options" >
@@ -122,6 +121,29 @@
             android:name=".act.debug.actDebugUserConfig"
             android:label="@string/title_activity_act_debug_user_config" >
         </activity>
+        <!-- Fin Actividad de opciones de usuario -->
+
+
+        <!-- Activades Botones Adicionales -->
+
+
+        <!-- Modo Ducha -->
+        <activity
+            android:name=".act.ducha.actModoDucha"
+            android:label="@string/title_activity_act_modo_ducha" >
+        </activity>
+
+        <activity
+            android:name=".act.ducha.actDuchaCuentaAtras"
+            android:label="@string/title_activity_act_ducha_cuenta_atras"
+            android:parentActivityName=".act.ducha.actModoDucha" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.local.android.teleasistenciaticplus.act.ducha.actModoDucha" />
+        </activity>
+
+        <!-- Fin Activades Botones Adicionales -->
+
     </application>
 
 </manifest>

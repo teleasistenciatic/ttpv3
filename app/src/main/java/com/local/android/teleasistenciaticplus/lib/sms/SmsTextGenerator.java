@@ -28,12 +28,15 @@ public class SmsTextGenerator {
         new SmsDispatcher(phoneNumberDestination, smsBodyText).send();
     }
 
-    public void generateSmsAviso(String phoneNumberDestination) {
+    public String getTextGenerateSmsAviso(String phoneNumberDestination) {
         // Andres García comunica que se encuentra bien a las 12:00 del día 12/03/2015
-
         String smsBodyText = "TELEASISTENCI@TIC+: " + nombre + " " + apellidos + " ha generado un aviso " + currentDateandTime;
+        return smsBodyText;
+    }
 
-        new SmsDispatcher(phoneNumberDestination, smsBodyText).send();
+    public String getTextGenerateSmsDucha(String phoneNumberDestination) {
+        String smsBodyText = "TELEASISTENCI@TIC+: " + nombre + " " + apellidos + " ha generado un aviso de ducha" + currentDateandTime;
+        return smsBodyText;
     }
 
 }

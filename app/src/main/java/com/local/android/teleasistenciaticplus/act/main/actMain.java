@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.act.debug.actMainDebug;
+import com.local.android.teleasistenciaticplus.act.ducha.actModoDucha;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptions;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsPersonaContacto;
 import com.local.android.teleasistenciaticplus.fragment.fragUserRegister;
@@ -23,6 +24,7 @@ import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
+import com.local.android.teleasistenciaticplus.lib.sms.SmsDispatcher;
 import com.local.android.teleasistenciaticplus.lib.sms.SmsTextGenerator;
 import com.local.android.teleasistenciaticplus.modelo.Constants;
 import com.local.android.teleasistenciaticplus.modelo.DebugLevel;
@@ -208,13 +210,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
      */
     public void showermode_action_button(View view) {
 
-        Toast.makeText(getBaseContext(), "Modo Ducha" , Toast.LENGTH_LONG).show();
-        PlaySound.play(R.raw.modo_ducha_activado);
-
-        //TODO implementar este método y la clase (actShowerMode)
-        /*
-        Intent intent = new Intent(this, actShowerMode.class);
-
+        Intent intent = new Intent(this, actModoDucha.class);
 
         startActivity(intent);
 
@@ -223,7 +219,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
             overridePendingTransition(R.animator.animation2, R.animator.animation1);
 
         }
-        */
+
     }
 
 
@@ -293,20 +289,31 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
         //Operación de envío de SMS
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
 
+        SmsTextGenerator miSmsTextGenerator = new SmsTextGenerator();
         if ( personasContacto[1].length() > 0) {
 
-            new SmsTextGenerator().generateSmsAviso(personasContacto[1]);
+            // Se envía el SMS
+            //SmsDispatcher miSmsDispatcher = new SmsDispatcher(personasContacto[1],"Hola");
+            //miSmsDispatcher.send();
+            String textoAviso = miSmsTextGenerator.getTextGenerateSmsAviso(personasContacto[1]);
+            new SmsDispatcher(personasContacto[1], textoAviso ).send();
         }
+
 
         if ( personasContacto[3].length() > 0) {
 
-            new SmsTextGenerator().generateSmsAviso( personasContacto[3] );
+            String textoAviso = miSmsTextGenerator.getTextGenerateSmsAviso(personasContacto[3]);
+            new SmsDispatcher(personasContacto[3], textoAviso ).send();
         }
 
         if ( personasContacto[5].length() > 0) {
 
-            new SmsTextGenerator().generateSmsAviso( personasContacto[5] );
+            String textoAviso = miSmsTextGenerator.getTextGenerateSmsAviso(personasContacto[5]);
+            new SmsDispatcher(personasContacto[5], textoAviso ).send();
         }
+
+        miSmsTextGenerator = null;
+
 
         //TODO: mejorar con el control de errores de SMS
 
@@ -389,6 +396,8 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
         }
 
         //Operación de envío de SMS
+        //TODO: controlar los caracteres especiales
+
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
 
         if ( personasContacto[1].length() > 0) {

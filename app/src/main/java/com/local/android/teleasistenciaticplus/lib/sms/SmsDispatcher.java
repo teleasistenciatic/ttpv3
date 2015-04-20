@@ -3,12 +3,13 @@ package com.local.android.teleasistenciaticplus.lib.sms;
 import android.telephony.SmsManager;
 
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
+import com.local.android.teleasistenciaticplus.modelo.Constants;
 
 /**
  * Created by FESEJU on 19/03/2015.
  */
 
-public class SmsDispatcher {
+public class SmsDispatcher implements Constants {
 
     private String phoneNumber; //Destinatario
     private String message; //cuerpo del mensaje
@@ -30,7 +31,9 @@ public class SmsDispatcher {
         // ¿Qué import es? import android.telephony.gsm.SmsManager;
         SmsManager sms = SmsManager.getDefault();
         try {
-            sms.sendTextMessage(phoneNumber, null, message, null, null);
+            if ( ! Constants.FAKE_SMS ) {
+                sms.sendTextMessage(phoneNumber, null, message, null, null);
+            }
         } catch (Exception e) {
             AppLog.e("SmsDispatcher", "SMS send error", e);
         }
