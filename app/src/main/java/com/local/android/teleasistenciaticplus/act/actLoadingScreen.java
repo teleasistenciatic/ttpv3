@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.act.main.actMain;
+import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 import com.local.android.teleasistenciaticplus.modelo.Constants;
 
 import java.util.Timer;
@@ -47,7 +48,17 @@ public class actLoadingScreen extends Activity implements Constants {
             @Override
             public void run() {
                 Intent mainIntent;
-                mainIntent = new Intent().setClass(actLoadingScreen.this, actMain.class);
+
+
+                String valorCargaPantallaAviso = new AppSharedPreferences().getPreferenceData(Constants.NOMBRE_APP_SHARED_PREFERENCES_NO_MOSTRAR_AVISO_TARIFICACION);
+
+                // Se muestra la pantalla de aviso de tarificación de SMS
+                if ( valorCargaPantallaAviso.length() > 0 ) { //el valor que se crea es "true"
+                    mainIntent = new Intent().setClass(actLoadingScreen.this, actMain.class);
+                } else {
+                    mainIntent = new Intent().setClass(actLoadingScreen.this, actMensajeTarificacionExtra.class);
+                }
+
                 startActivity(mainIntent);
 
                 if (Constants.SHOW_ANIMATION == true) {

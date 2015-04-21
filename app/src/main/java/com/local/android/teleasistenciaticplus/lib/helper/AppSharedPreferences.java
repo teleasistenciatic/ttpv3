@@ -155,4 +155,35 @@ public class AppSharedPreferences implements Constants {
         }
     }
 
+    //Estos tres metodos son genéricos y permiten leer cualquier valor de las AppSharedPreferences
+
+    public void setPreferenceData (String map, String valor) {
+        SharedPreferences.Editor editor = GlobalData.getAppContext().getSharedPreferences( APP_SHARED_PREFERENCES_FILE , Context.MODE_PRIVATE ).edit();
+        editor.putString(map, valor);
+        editor.commit();
+    }
+
+    public void deletePreferenceData(String map) {
+        setPreferenceData(map,"");
+    }
+
+    public String getPreferenceData(String map) {
+
+        SharedPreferences prefs = GlobalData.getAppContext().getSharedPreferences( APP_SHARED_PREFERENCES_FILE , Context.MODE_PRIVATE);
+        String value = prefs.getString(map, "");
+
+        return value;
+    }
+
+    public boolean hasPreferenceData(String map) {
+
+        SharedPreferences prefs = GlobalData.getAppContext().getSharedPreferences( APP_SHARED_PREFERENCES_FILE , Context.MODE_PRIVATE);
+        String value = prefs.getString(map, "");
+
+        if  ( value.length() > 0)  {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

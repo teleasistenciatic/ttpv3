@@ -34,6 +34,13 @@
         android:text="Borrar personas de contacto" />
 
     <Button
+        android:id="@+id/debug_screen_user_config_borrar_aviso_tarificacion_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="user_config_borrar_appshared_aviso_tarificacion"
+        android:text="Borrar valor de aviso tarificacion" />
+
+    <Button
         android:id="@+id/debug_screen_button_exit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -12,13 +12,13 @@
     <string name="init_splash_screen_iniciando_aplicacion">Iniciando aplicación</string>
 
     <!-- Información de tarificación adicional SMS -->
-    <string name="tarificacion_adicional_sms">
-        <p>Esta aplicación usa el envío de mensajes de texto (SMS) que
-            <b>pueden conllevar un coste adicional en su tarifa en caso de no estar incluidos en la misma.</b></p>
-
-        <p>El precio aproximado es de unos 0,18 céntimos de euro.</p>
+    <string name="tarificacion_adicional_sms_linea_1">El uso de esta aplicación implica el envío de mensajes de texto (SMS) que
+            pueden conllevar un coste adicional en su tarifa en caso de no estar incluidos en la misma.
     </string>
 
+    <string name="tarificacion_adicional_sms_linea_2">Consulte a su operadora de telecomunicaciones para conocer detalles
+        sobre la tarificación de los mensajes de texto (SMS).
+    </string>
 
     <!-- Cadenas por defecto -->
     <string name="hello_world">Hello world!</string>
@@ -78,6 +78,7 @@
         <string name="user_options_persona_contacto_label">Persona de contacto (pulse para cambiar)</string>
 
     <!-- Actividad main debug -->
+
         <string name="title_activity_act_main_debug">Pantalla de depuracion</string>
         <string name="sms_button_text">Aviso a familiar</string>
 
@@ -116,10 +117,14 @@
         <string name="modo_ducha_boton_30_minutos">Ducha de 30 minutos</string>
         <string name="modo_ducha_boton_45_minutos">Ducha de 45 minutos</string>
         <string name="action_settings">Settings</string>
-    <string name="title_activity_act_ducha_cuenta_atras">actDuchaCuentaAtras</string>
-    <string name="title_activity_act_mensaje_tarificacion_extra">actMensajeTarificacionExtra
-    </string>
+        <string name="title_activity_act_ducha_cuenta_atras">actDuchaCuentaAtras</string>
+        <string name="title_activity_act_mensaje_tarificacion_extra">actMensajeTarificacionExtra</string>
     <!-- Fin Modo Ducha -->
+
+    <!-- Aviso de coste de SMS -->
+    <string name="aceptar">Aceptar</string>
+    <string name="no_volver_a_mostrar">no volver a mostrar este mensaje</string>
+    <!-- fin Relacionadas SMS -->
 
 </resources>
 
@@ -147,4 +152,3 @@
 <string name="red_button_label_cancel">CANCELAR AVISO</string>
 
 -->
-

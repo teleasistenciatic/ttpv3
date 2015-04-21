@@ -1,10 +1,7 @@
 package com.local.android.teleasistenciaticplus.act.main;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -20,7 +17,6 @@ import com.local.android.teleasistenciaticplus.act.ducha.actModoDucha;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptions;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsDatosPersonales;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsPersonaContacto;
-import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
@@ -43,10 +39,16 @@ public class actMain extends Activity {
     ImageButton SMSAlertButton;
     ImageButton SMSOKButton;
 
+    static actMain instanciaActMain;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instanciaActMain = this; //Se utiliza para obtener una instancia desde otra actividad
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
+
+
 
         SMSAlertButton = (ImageButton) findViewById(R.id.tfmButton);
         SMSOKButton = (ImageButton) findViewById(R.id.btnIamOK);
@@ -80,6 +82,9 @@ public class actMain extends Activity {
 
     }
 
+    public static actMain getInstance(){
+        return instanciaActMain;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -221,7 +226,6 @@ public class actMain extends Activity {
         Boolean hayPersonasContactoConTelefono = new AppSharedPreferences().hasPersonasContacto();
 
         if (!hayPersonasContactoConTelefono) {
-
             /*
             /////////
             //Genera una alerta en caso de que no tengamos asignados los contactos
@@ -441,7 +445,6 @@ public class actMain extends Activity {
             }, Constants.SMS_SENDING_DELAY);
 
         }
-
 
     }
 }

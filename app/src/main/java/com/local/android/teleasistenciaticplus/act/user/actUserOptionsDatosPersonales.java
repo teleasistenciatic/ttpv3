@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.local.android.teleasistenciaticplus.R;
+import com.local.android.teleasistenciaticplus.act.main.actMain;
 import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 
@@ -28,6 +29,13 @@ public class actUserOptionsDatosPersonales extends Activity {
         textEditApellidos.setText(datosPersonales[1]);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onDestroy();
+        actMain.getInstance().finish(); //Si se pulsa el botón de BACK, eliminamos la Stack completa de llamadas
+        finish();
+    }
+
     /**
      * Se guardan los datos del usuario en las SharedPreferences
      *
@@ -39,7 +47,7 @@ public class actUserOptionsDatosPersonales extends Activity {
         TextView textEditApellidos = (TextView) findViewById(R.id.user_options_datos_personales_apellidos_text);
 
         //Sólo se permite la modificación con nombre y apellidos correctos -al menos con un valor-
-        if ( ( textEditNombre.getText().length() > 0 ) && ( textEditApellidos.getText().length() > 0 ) ) {
+        if ((textEditNombre.getText().length() > 0) && (textEditApellidos.getText().length() > 0)) {
 
             AppSharedPreferences userSharedPreferences = new AppSharedPreferences();
             userSharedPreferences.setUserData(textEditNombre.getText().toString(), textEditApellidos.getText().toString());

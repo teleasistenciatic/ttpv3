@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
+import com.local.android.teleasistenciaticplus.modelo.Constants;
 
 public class actDebugUserConfig extends Activity {
 
@@ -27,6 +28,15 @@ public class actDebugUserConfig extends Activity {
     public void user_config_borrar_personas_contacto_button(View view) {
 
         new AppSharedPreferences().deletePersonasContacto();
+        Toast.makeText(getBaseContext(), "OK",
+                Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void user_config_borrar_appshared_aviso_tarificacion(View view) {
+
+        new AppSharedPreferences().deletePreferenceData(Constants.NOMBRE_APP_SHARED_PREFERENCES_NO_MOSTRAR_AVISO_TARIFICACION);
+
         Toast.makeText(getBaseContext(), "OK",
                 Toast.LENGTH_SHORT).show();
 

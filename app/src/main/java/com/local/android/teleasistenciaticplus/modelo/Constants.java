@@ -47,6 +47,12 @@ public interface Constants {
 
         public static final String APP_SHARED_PREFERENCES_FILE = "teleasistencia.prefs";
 
+    ////////////////////////////////////////////////
+    // VALORES DE SHAREDPREFERENCES
+    ////////////////////////////////////////////////
+
+        public static final String NOMBRE_APP_SHARED_PREFERENCES_NO_MOSTRAR_AVISO_TARIFICACION = "avisotarificacion";
+
 }
 
 /*
