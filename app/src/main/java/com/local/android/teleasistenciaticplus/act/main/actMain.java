@@ -18,6 +18,7 @@ import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.act.debug.actMainDebug;
 import com.local.android.teleasistenciaticplus.act.ducha.actModoDucha;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptions;
+import com.local.android.teleasistenciaticplus.act.user.actUserOptionsDatosPersonales;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsPersonaContacto;
 import com.local.android.teleasistenciaticplus.fragment.fragUserRegister;
 import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
@@ -42,7 +43,6 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
     ImageButton SMSAlertButton;
     ImageButton SMSOKButton;
-    Boolean lastSMS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,22 +57,29 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
             PlaySound.play(R.raw.bienvenido);
         }
 
-
         /////////////////////////////////////////////////////////////
         // Si no tiene datos personales (nombre + apellidos) en la aplicación se muestra el fragmento
         /////////////////////////////////////////////////////////////
 
         boolean hasUserData = new AppSharedPreferences().hasUserData();
         if (!hasUserData) {
+
+            //Carga de la ventana para la introducción del
+            //Nombre y apellidos del usuario
+            Intent intent = new Intent(this, actUserOptionsDatosPersonales.class);
+            startActivity(intent);
+
+            /*
             Fragment miFragRegistroUsuario = new fragUserRegister();
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .add(R.id.overlay_user_register_loading_screen, miFragRegistroUsuario)
                     .commit();
+            */
+
         }
     }
-
 
     @Override
     protected void onStart(){
@@ -84,10 +91,10 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        // SE muestra un menu u otro según el modo en que estemos
         // Si estamos en modo de depuración
         if ( Constants.DEBUG_LEVEL == DebugLevel.DEBUG ) {
             getMenuInflater().inflate(R.menu.menu_act_main, menu);

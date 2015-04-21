@@ -12,7 +12,7 @@ public interface Constants {
     ////////////////////////////////////////////////
 
         public static final DebugLevel DEBUG_LEVEL = DebugLevel.DEBUG;
-        public static final boolean FAKE_SMS = true;
+        public static final boolean FAKE_SMS = false;
 
         public static final Boolean LOG_TO_FILE = true;
         public static final String DEBUG_LOG_FILE = "teleasistencia.log";

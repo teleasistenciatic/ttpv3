@@ -38,26 +38,51 @@ public class actUserOptionsDatosPersonales extends Activity {
         TextView textEditNombre = (TextView) findViewById(R.id.user_options_datos_personales_nombre_text);
         TextView textEditApellidos = (TextView) findViewById(R.id.user_options_datos_personales_apellidos_text);
 
-        AppSharedPreferences userSharedPreferences = new AppSharedPreferences();
-        userSharedPreferences.setUserData(textEditNombre.getText().toString(), textEditApellidos.getText().toString());
+        //Sólo se permite la modificación con nombre y apellidos correctos -al menos con un valor-
+        if ( ( textEditNombre.getText().length() > 0 ) && ( textEditApellidos.getText().length() > 0 ) ) {
 
-        /////////
-        //Feedback al usuario tras la actualización
-        /////////
-        AlertDialogShow popup_conn = new AlertDialogShow();
-        popup_conn.setTitulo(getResources().getString(R.string.user_options_datos_personales_edit));
+            AppSharedPreferences userSharedPreferences = new AppSharedPreferences();
+            userSharedPreferences.setUserData(textEditNombre.getText().toString(), textEditApellidos.getText().toString());
 
-        popup_conn.setMessage(getResources().getString(R.string.user_options_datos_personales_correct_edit));
+            /*
+            /////////
+            //Feedback al usuario tras la actualización
+            /////////
+            AlertDialogShow popup_conn = new AlertDialogShow();
+            popup_conn.setTitulo(getResources().getString(R.string.user_options_datos_personales_edit));
 
-        popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
-        popup_conn.show(getFragmentManager(), "dummyTAG");
-        //Fin del mensaje de información
+            popup_conn.setMessage(getResources().getString(R.string.user_options_datos_personales_correct_edit));
+
+            popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
+            popup_conn.show(getFragmentManager(), "dummyTAG");
+            //Fin del mensaje de información
+            */
+
+            // Para acelerar la UI, simplemente se guarda y cierra en una pulsación
+            finish();
+
+        } else {
+
+            /////////
+            //Feedback para que introduzca valores de nombre y apellidos
+            /////////
+            AlertDialogShow popup_conn = new AlertDialogShow();
+            popup_conn.setTitulo(getResources().getString(R.string.user_options_datos_personales_edit));
+
+            popup_conn.setMessage(getResources().getString(R.string.user_options_datos_personales_empty_name_surname_edit));
+
+            popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
+            popup_conn.show(getFragmentManager(), "dummyTAG");
+            //Fin del mensaje de información
+
+        }
 
     }
 
+    /*
     public void user_options_datos_personales_exit(View view) {
         finish();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

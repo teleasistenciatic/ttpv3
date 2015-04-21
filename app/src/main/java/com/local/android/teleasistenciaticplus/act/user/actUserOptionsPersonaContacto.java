@@ -266,4 +266,8 @@ public class actUserOptionsPersonaContacto extends Activity {
 
     }
 
+    public void user_options_persona_contacto_salir_button(View view) {
+        finish();
+    }
+
 }
