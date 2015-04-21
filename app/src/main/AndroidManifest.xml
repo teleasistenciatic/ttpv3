@@ -132,7 +132,6 @@
             android:name=".act.ducha.actModoDucha"
             android:label="@string/title_activity_act_modo_ducha" >
         </activity>
-
         <activity
             android:name=".act.ducha.actDuchaCuentaAtras"
             android:label="@string/title_activity_act_ducha_cuenta_atras"
@@ -143,6 +142,12 @@
         </activity>
 
         <!-- Fin Activades Botones Adicionales -->
+
+        <!-- Mensaje de tarificación extra -->
+        <activity
+            android:name=".act.actMensajeTarificacionExtra"
+            android:label="@string/title_activity_act_mensaje_tarificacion_extra" >
+        </activity>
 
     </application>
 

@@ -7,6 +7,9 @@ import com.local.android.teleasistenciaticplus.modelo.Constants;
 
 /**
  * Created by FESEJU on 19/03/2015.
+ * La clase final que envía realmente el SMS
+ * Depende de que la constante FAKE_SMS para enviarse (si esta a true, no se manda para no suponer
+ * una tarificación adicional)
  */
 
 public class SmsDispatcher implements Constants {
