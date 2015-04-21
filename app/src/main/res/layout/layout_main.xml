@@ -153,9 +153,4 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/overlay_user_register_loading_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
 </merge>

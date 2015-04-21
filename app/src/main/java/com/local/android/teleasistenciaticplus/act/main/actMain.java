@@ -20,7 +20,6 @@ import com.local.android.teleasistenciaticplus.act.ducha.actModoDucha;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptions;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsDatosPersonales;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsPersonaContacto;
-import com.local.android.teleasistenciaticplus.fragment.fragUserRegister;
 import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
@@ -39,7 +38,7 @@ import java.util.Date;
  * @param
  */
 
-public class actMain extends Activity implements fragUserRegister.OnFragmentInteractionListener {
+public class actMain extends Activity {
 
     ImageButton SMSAlertButton;
     ImageButton SMSOKButton;
@@ -53,7 +52,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
         SMSOKButton = (ImageButton) findViewById(R.id.btnIamOK);
 
         //Damos la bienvenida
-        if(Constants.PLAY_SOUNDS){
+        if (Constants.PLAY_SOUNDS) {
             PlaySound.play(R.raw.bienvenido);
         }
 
@@ -69,20 +68,11 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
             Intent intent = new Intent(this, actUserOptionsDatosPersonales.class);
             startActivity(intent);
 
-            /*
-            Fragment miFragRegistroUsuario = new fragUserRegister();
-
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .add(R.id.overlay_user_register_loading_screen, miFragRegistroUsuario)
-                    .commit();
-            */
-
         }
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         //Toast.makeText(getBaseContext(), "OnStart!" , Toast.LENGTH_LONG).show();
 
@@ -96,7 +86,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
         // SE muestra un menu u otro según el modo en que estemos
         // Si estamos en modo de depuración
-        if ( Constants.DEBUG_LEVEL == DebugLevel.DEBUG ) {
+        if (Constants.DEBUG_LEVEL == DebugLevel.DEBUG) {
             getMenuInflater().inflate(R.menu.menu_act_main, menu);
         } else { //si estamos en modo de producción no mostramos el menu de depuración
             getMenuInflater().inflate(R.menu.menu_act_main_produccion, menu);
@@ -116,60 +106,15 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_act_main_exit_app) {
             finish();
-        } else if ( id == R.id.menu_act_main_debug_screen ) {
+        } else if (id == R.id.menu_act_main_debug_screen) {
             Intent intent = new Intent(this, actMainDebug.class);
             startActivity(intent);
-        } else if ( id == R.id.menu_act_user_options ) {
+        } else if (id == R.id.menu_act_user_options) {
             Intent intent = new Intent(this, actUserOptions.class);
             startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Se encarga de gestionar la UI del fragmento de registro de nuevo usuario
-     * @param uri
-     */
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    public void user_register_datos_personales_aceptar(View view) {
-
-        TextView textEditNombre = (TextView) findViewById(R.id.user_register_datos_personales_nombre_text);
-        TextView textEditApellidos = (TextView) findViewById(R.id.user_register_datos_personales_apellidos_text);
-
-        AppSharedPreferences userSharedPreferences = new AppSharedPreferences();
-        userSharedPreferences.setUserData( textEditNombre.getText().toString() , textEditApellidos.getText().toString() );
-
-        /////////
-        //Feedback al usuario tras la actualización
-        /////////
-            AlertDialogShow popup_conn = new AlertDialogShow();
-            popup_conn.setTitulo(getResources().getString(R.string.user_options_datos_personales_edit));
-
-            popup_conn.setMessage(getResources().getString(R.string.user_options_datos_personales_correct_edit));
-
-            popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
-            popup_conn.show(getFragmentManager(), "dummyTAG");
-        //Fin del mensaje de información
-
-
-        fragmentUserRegisterHide();
-
-    }
-
-    public void fragmentUserRegisterHide() {
-
-        //Fragment miFragRegistroUsuario = new fragUserRegister();
-
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment userFragment = getFragmentManager().findFragmentById(R.id.overlay_user_register_loading_screen);
-        fragmentManager.beginTransaction()
-                .hide(userFragment)
-                .commit();
     }
 
 
@@ -180,8 +125,8 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
     /**
      * Botón de acceso a la Configuración
      * Da acceso a la configuración de parámetros personales
-     * @param
      *
+     * @param
      */
     public void configuration_action_button(View view) {
 
@@ -189,7 +134,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
         startActivity(intent);
 
-        if( Constants.SHOW_ANIMATION ) {
+        if (Constants.SHOW_ANIMATION) {
 
             overridePendingTransition(R.animator.animation2, R.animator.animation1);
 
@@ -199,12 +144,12 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
     /**
      * Botón para volver a casa
      * Activa la opción de volver a casa
-     * @param view
      *
+     * @param view
      */
     public void backtohome_action_button(View view) {
 
-        Toast.makeText(getBaseContext(), "Volver a Casa" , Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Volver a Casa", Toast.LENGTH_LONG).show();
         //TODO implementar este método y la clase (actBackToHome)
         /*
         Intent intent = new Intent(this, actBackToHome.class);
@@ -220,12 +165,11 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
         */
     }
 
-
     /**
      * Botón para activar el modo ducha
      * Activa el modo ducha
-     * @param view
      *
+     * @param view
      */
     public void showermode_action_button(View view) {
 
@@ -233,7 +177,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
         startActivity(intent);
 
-        if( Constants.SHOW_ANIMATION ) {
+        if (Constants.SHOW_ANIMATION) {
 
             overridePendingTransition(R.animator.animation2, R.animator.animation1);
 
@@ -245,8 +189,8 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
     /**
      * Botón para acceder a los contactos familiares
      * Atajo a los contactos familiares
-     * @param view
      *
+     * @param view
      */
     public void familiar_action_button(View view) {
 
@@ -254,7 +198,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
         startActivity(intent);
 
-        if( Constants.SHOW_ANIMATION ) {
+        if (Constants.SHOW_ANIMATION) {
 
             overridePendingTransition(R.animator.animation2, R.animator.animation1);
 
@@ -262,9 +206,9 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
     }
 
 
-
     /**
      * Envio de los SMS a los familiares
+     *
      * @param view
      */
     public void sendAvisoSms(View view) {
@@ -276,7 +220,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
         Boolean hayPersonasContactoConTelefono = new AppSharedPreferences().hasPersonasContacto();
 
-        if ( !hayPersonasContactoConTelefono ) {
+        if (!hayPersonasContactoConTelefono) {
 
             /*
             /////////
@@ -292,13 +236,13 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
             //Se abre el menú de personas de contacto*/
             //TODO solucionar la llamada del dialog para que solo responda al botón cerrar
 
-            Toast.makeText(getBaseContext(), getResources().getString(R.string.user_register_no_phone_contacs) , Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), getResources().getString(R.string.user_register_no_phone_contacs), Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(this, actUserOptionsPersonaContacto.class);
 
             startActivity(intent);
 
-            if( Constants.SHOW_ANIMATION ) {
+            if (Constants.SHOW_ANIMATION) {
 
                 overridePendingTransition(R.animator.animation2, R.animator.animation1);
 
@@ -307,7 +251,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
 
-        SmsLauncher miSmsLauncher = new SmsLauncher( TipoAviso.AVISO );
+        SmsLauncher miSmsLauncher = new SmsLauncher(TipoAviso.AVISO);
 
         Boolean hayListaContactos = miSmsLauncher.generateAndSend();
 
@@ -344,7 +288,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
         //Si se ha mandado algún SMS...
 
-        if ( (personasContacto[1].length() + personasContacto[3].length() + personasContacto[5].length() ) > 0) {
+        if ((personasContacto[1].length() + personasContacto[3].length() + personasContacto[5].length()) > 0) {
 
             //Actualizamos el tiempo del envío del mensaje
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MM-yyyy 'a las' HH:mm:ss");
@@ -370,7 +314,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
 
             //Avisamos al usuario de que ha enviado el SMS con un sonido
-            if(Constants.PLAY_SOUNDS) {
+            if (Constants.PLAY_SOUNDS) {
 
                 PlaySound.play(R.raw.mensaje_enviado);
 
@@ -388,13 +332,14 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
                     SMSAlertButton.setEnabled(true);
                     SMSAlertButton.setBackgroundResource(R.drawable.red_button200);
                 }
-            },Constants.SMS_SENDING_DELAY);
+            }, Constants.SMS_SENDING_DELAY);
 
         }
     }
 
     /**
      * botón para enviar SMS de tranquilidad (I'm OK)
+     *
      * @param view
      */
     public void sendAvisoIamOK(View view) {
@@ -405,15 +350,15 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
         Boolean hayPersonasContactoConTelefono = new AppSharedPreferences().hasPersonasContacto();
 
-        if ( !hayPersonasContactoConTelefono ) {
+        if (!hayPersonasContactoConTelefono) {
 
-            Toast.makeText(getBaseContext(), getResources().getString(R.string.user_register_no_phone_contacs) , Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), getResources().getString(R.string.user_register_no_phone_contacs), Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(this, actUserOptionsPersonaContacto.class);
 
             startActivity(intent);
 
-            if( Constants.SHOW_ANIMATION ) {
+            if (Constants.SHOW_ANIMATION) {
 
                 overridePendingTransition(R.animator.animation2, R.animator.animation1);
 
@@ -424,7 +369,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
         //TODO: controlar los caracteres especiales
 
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
-        SmsLauncher miSmsLauncher = new SmsLauncher( TipoAviso.IAMOK );
+        SmsLauncher miSmsLauncher = new SmsLauncher(TipoAviso.IAMOK);
 
         Boolean hayListaContactos = miSmsLauncher.generateAndSend();
 
@@ -447,10 +392,9 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
         }*/
 
 
-
         //Si se ha mandado algún SMS...
 
-        if ( (personasContacto[1].length() + personasContacto[3].length() + personasContacto[5].length() ) > 0) {
+        if ((personasContacto[1].length() + personasContacto[3].length() + personasContacto[5].length()) > 0) {
 
             //Actualizamos el tiempo del envío del mensaje
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MM-yyyy 'a las' HH:mm:ss");
@@ -476,7 +420,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
 
             //Avisamos al usuario de que ha enviado el SMS con un sonido
-            if(Constants.PLAY_SOUNDS) {
+            if (Constants.PLAY_SOUNDS) {
 
                 PlaySound.play(R.raw.mensaje_enviado);
 
@@ -494,16 +438,9 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
                     SMSOKButton.setEnabled(true);
                     SMSOKButton.setBackgroundResource(R.drawable.iam_ok);
                 }
-            },Constants.SMS_SENDING_DELAY);
+            }, Constants.SMS_SENDING_DELAY);
 
         }
-
-
-
-
-
-
-
 
 
     }
