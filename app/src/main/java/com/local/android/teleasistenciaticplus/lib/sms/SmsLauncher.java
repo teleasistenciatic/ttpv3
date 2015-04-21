@@ -13,7 +13,7 @@ public class SmsLauncher {
     TipoAviso aviso;
 
     public SmsLauncher(TipoAviso tipoAviso) {
-
+        aviso = tipoAviso;
         AppLog.d("TAG",tipoAviso + "");
     }
 
@@ -50,7 +50,7 @@ public class SmsLauncher {
                         break;
 
                     case IAMOK:
-                        textoSms = new SmsTextGenerator().getTextG( telefonos[i] );
+                        textoSms = new SmsTextGenerator().getTextGenerateSmsIamOK( telefonos[i] );
                         break;
                 }
 

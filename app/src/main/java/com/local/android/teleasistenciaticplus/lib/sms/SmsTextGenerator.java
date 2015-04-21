@@ -20,12 +20,11 @@ public class SmsTextGenerator {
         this.apellidos = nombreApellidos[1];
     }
 
-    public void generateSmsIamOK(String phoneNumberDestination) {
+    public String getTextGenerateSmsIamOK(String phoneNumberDestination) {
         // Andres García comunica que se encuentra bien a las 12:00 del día 12/03/2015
 
         String smsBodyText = "TELEASISTENCI@TIC+: " + nombre + " " + apellidos + " comunica que se encuentra bien a las " + currentDateandTime;
-
-        new SmsDispatcher(phoneNumberDestination, smsBodyText).send();
+        return smsBodyText;
     }
 
     public String getTextGenerateSmsAviso(String phoneNumberDestination) {

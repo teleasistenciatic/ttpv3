@@ -1,6 +1,9 @@
 package com.local.android.teleasistenciaticplus.act.debug;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -8,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.local.android.teleasistenciaticplus.R;
+import com.local.android.teleasistenciaticplus.modelo.GlobalData;
 
 /**
  * Created by GAMO1J on 09/04/2015.
@@ -54,21 +58,47 @@ public class actDebugChronometer extends Activity {
 
             futureTime = Integer.parseInt(mins) * 60000;
 
+            //futureTime = 15000;
+
             isTheFinalCountDown = new CountDownTimer(futureTime, interval) {
+
+                Notification noti = new Notification.Builder(getApplicationContext())
+                        .setSound(Uri.parse("android.resource://" + GlobalData.getAppContext().getPackageName() + "/" + R.raw.beep_07))
+                        .build();
+                //noti.sound = Uri.parse("android.resource://" + GlobalData.getAppContext().getPackageName() + "/" + R.raw.modo_ducha_activado)
+
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
                 @Override
                 public void onTick(long millisUntilFinished) {
 
                     if (millisUntilFinished  < 60000) {
                         mTextField.setText("00:" + millisUntilFinished / 1000);
+
+                        if (millisUntilFinished  < 10000) {
+                            mTextField.setText("00:0" + millisUntilFinished / 1000);
+                        }
+
+                        notificationManager.notify(0, noti);
+
+
                     } else {
-                        //TODO parse the textfield to show minutes and seconds
+
                         int minutos = (int) (millisUntilFinished / 60000);
                         int segundos = (int) ( ( (millisUntilFinished / 1000) - (minutos * 60)) );
                         if(millisUntilFinished > 600000) {
                             mTextField.setText("" + minutos + ":" + segundos);
+
+                            if (segundos  < 10) {
+                                mTextField.setText("" + minutos +":0" + segundos);
+                            }
+
+
                         }else {
                             mTextField.setText("0" + minutos + ":" + segundos);
+                            if (segundos  < 10) {
+                                mTextField.setText("0" + minutos +":0" + segundos);
+                            }
                         }
 
                     }

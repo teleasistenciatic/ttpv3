@@ -24,10 +24,10 @@ import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
-import com.local.android.teleasistenciaticplus.lib.sms.SmsDispatcher;
-import com.local.android.teleasistenciaticplus.lib.sms.SmsTextGenerator;
+import com.local.android.teleasistenciaticplus.lib.sms.SmsLauncher;
 import com.local.android.teleasistenciaticplus.modelo.Constants;
 import com.local.android.teleasistenciaticplus.modelo.DebugLevel;
+import com.local.android.teleasistenciaticplus.modelo.TipoAviso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,6 +42,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
 
     ImageButton SMSAlertButton;
     ImageButton SMSOKButton;
+    Boolean lastSMS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,17 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
                     .commit();
         }
     }
+
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        //Toast.makeText(getBaseContext(), "OnStart!" , Toast.LENGTH_LONG).show();
+
+        //TODO Recibir el intent del modo ducha para actualizar el texto de último sms enviado.
+
+    }
+
 
 
     @Override
@@ -286,8 +298,15 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
             }
         }
 
-        //Operación de envío de SMS
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
+
+        SmsLauncher miSmsLauncher = new SmsLauncher( TipoAviso.AVISO );
+
+        Boolean hayListaContactos = miSmsLauncher.generateAndSend();
+
+        /*
+        //Operación de envío de SMS
+
 
         SmsTextGenerator miSmsTextGenerator = new SmsTextGenerator();
         if ( personasContacto[1].length() > 0) {
@@ -298,7 +317,6 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
             String textoAviso = miSmsTextGenerator.getTextGenerateSmsAviso(personasContacto[1]);
             new SmsDispatcher(personasContacto[1], textoAviso ).send();
         }
-
 
         if ( personasContacto[3].length() > 0) {
 
@@ -312,7 +330,7 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
             new SmsDispatcher(personasContacto[5], textoAviso ).send();
         }
 
-        miSmsTextGenerator = null;
+        miSmsTextGenerator = null; */
 
 
         //TODO: mejorar con el control de errores de SMS
@@ -399,24 +417,27 @@ public class actMain extends Activity implements fragUserRegister.OnFragmentInte
         //TODO: controlar los caracteres especiales
 
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
+        SmsLauncher miSmsLauncher = new SmsLauncher( TipoAviso.IAMOK );
 
-        if ( personasContacto[1].length() > 0) {
+        Boolean hayListaContactos = miSmsLauncher.generateAndSend();
 
-            new SmsTextGenerator().generateSmsIamOK( personasContacto[1] );
+        /*if ( personasContacto[1].length() > 0) {
+
+            new SmsTextGenerator().getTextGenerateSmsIamOK(personasContacto[1]);
 
         }
 
         if ( personasContacto[3].length() > 0) {
 
-            new SmsTextGenerator().generateSmsIamOK( personasContacto[3] );
+            new SmsTextGenerator().getTextGenerateSmsIamOK(personasContacto[3]);
 
         }
 
         if ( personasContacto[5].length() > 0) {
 
-            new SmsTextGenerator().generateSmsIamOK( personasContacto[5] );
+            new SmsTextGenerator().getTextGenerateSmsIamOK(personasContacto[5]);
 
-        }
+        }*/
 
 
 

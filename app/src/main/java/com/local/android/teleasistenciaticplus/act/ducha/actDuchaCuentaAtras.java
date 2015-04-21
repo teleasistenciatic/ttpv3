@@ -1,15 +1,23 @@
 package com.local.android.teleasistenciaticplus.act.ducha;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.local.android.teleasistenciaticplus.R;
+import com.local.android.teleasistenciaticplus.act.main.actMain;
 import com.local.android.teleasistenciaticplus.lib.sms.SmsLauncher;
+import com.local.android.teleasistenciaticplus.modelo.Constants;
+import com.local.android.teleasistenciaticplus.modelo.GlobalData;
 import com.local.android.teleasistenciaticplus.modelo.TipoAviso;
 
 public class actDuchaCuentaAtras extends Activity {
@@ -72,37 +80,81 @@ public class actDuchaCuentaAtras extends Activity {
 
         futureTime = futureTime * 60000;
 
+        //Generamos una notificación sonora
+        final Notification beep_sound = new Notification.Builder(getApplicationContext())
+                .setSound(Uri.parse("android.resource://" + GlobalData.getAppContext().getPackageName() + "/" + R.raw.beep_07))
+                .build();
 
+        final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        //futureTime = 5000;
         TheCountDown = new CountDownTimer(futureTime, interval) {
+
+            Boolean alarmaDisparada = false;
 
             @Override
             public void onTick(long millisUntilFinished) {
 
+                //TODO: ¿se puede reducir esta parte aplicando SimpleDateFormat?
+                //TODO: poner un efecto en pantalla si la alarma acústica se ha disparado
+
                 if (millisUntilFinished  < 60000) {
                     mTextField.setText("00:" + millisUntilFinished / 1000);
+
+                    if (millisUntilFinished  < 10000) {
+                        mTextField.setText("00:0" + millisUntilFinished / 1000);
+                    }
+
+                    notificationManager.notify(0, beep_sound);
+
                 } else {
-                    //TODO parse the textfield to show minutes and seconds
+
                     int minutos = (int) (millisUntilFinished / 60000);
                     int segundos = (int) ( ( (millisUntilFinished / 1000) - (minutos * 60)) );
                     if(millisUntilFinished > 600000) {
                         mTextField.setText("" + minutos + ":" + segundos);
+
+                        if (segundos  < 10) {
+                            mTextField.setText("" + minutos +":0" + segundos);
+                        }
+
+
                     }else {
                         mTextField.setText("0" + minutos + ":" + segundos);
+                        if (segundos  < 10) {
+                            mTextField.setText("0" + minutos +":0" + segundos);
+                        }
                     }
 
                 }
+
 
             }
 
             @Override
             public void onFinish() {
-                //TODO: launch SMS
-                mTextField.setText("Send SMS");
+
+                mTextField.setText("sms");
                 //Enviar los tres SMS
                 //Tipo de SMS : envio de ducha
+
                 SmsLauncher miSmsLauncher = new SmsLauncher( TipoAviso.DUCHANOATENDIDA  );
                 Boolean listaContactosVacia = miSmsLauncher.generateAndSend();
 
+                //TODO Mostrar en un diálogo que el SMS se ha enviado
+                Toast.makeText(getBaseContext(), "AVISO: SMS de tipo DUCHA enviado." , Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(GlobalData.getAppContext(), actMain.class);
+                intent.putExtra("sms_ducha_enviado",true);
+
+                startActivity(intent);
+
+                if( Constants.SHOW_ANIMATION ) {
+
+                    overridePendingTransition(R.animator.animation2, R.animator.animation1);
+
+                }
+                finish();
             }
         }.start();
 

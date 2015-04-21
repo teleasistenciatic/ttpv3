@@ -18,6 +18,11 @@ public class actModoDucha extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_modo_ducha);
+
+        //TODO Comprobar antes de nada que haya contactos.
+        // Si no hay mostrar diálogo para acceder a la zona de configuración.
+        //Se queda pendiente hasta que Antonio incluya los diálogos
+
     }
 
 
@@ -77,5 +82,6 @@ public class actModoDucha extends Activity {
             overridePendingTransition(R.animator.animation2, R.animator.animation1);
 
         }
-            }
+        finish();
+    }
 }
