@@ -143,12 +143,22 @@
 
         <!-- Fin Activades Botones Adicionales -->
 
+
         <!-- Mensaje de tarificación extra -->
         <activity
             android:name=".act.actMensajeTarificacionExtra"
             android:label="@string/title_activity_act_mensaje_tarificacion_extra" >
         </activity>
 
+        <receiver android:name=".act.widget.actWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/xml_configwidget" />
+        </receiver>
     </application>
 
 </manifest>
