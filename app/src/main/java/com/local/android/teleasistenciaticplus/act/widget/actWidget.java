@@ -3,13 +3,19 @@ package com.local.android.teleasistenciaticplus.act.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.act.main.actMain;
+
+import java.util.Locale;
 
 /**
  * Implementación de la acción del Widget que levanta la Actividad Principal.
@@ -57,9 +63,10 @@ public class actWidget extends AppWidgetProvider
     }
 
     /////////////////////////////////
-    // IMPLEMENTACIÓN BÁSICA DEL RECEPTOR DE EVENTOS DEL WIDGET. SE DEJA PARA FUTUROS USOS.
+    // IMPLEMENTACIÓN BÁSICA DEL RECEPTOR DE EVENTOS DEL WIDGET. Lo dejo comentado para uso futuro.
     /////////////////////////////////
- /*   public void onReceive(Context context, Intent intent)
+    /*
+    public void onReceive(Context context, Intent receivedIntent)
     {
         //super.onReceive(context, intent);
 
@@ -68,10 +75,80 @@ public class actWidget extends AppWidgetProvider
         ComponentName thisWidget = new ComponentName(context.getPackageName(),
                     actWidget.class.getName());
 
-        int[] WidgetIds = widgetManager.getAppWidgetIds(thisWidget);
-        Log.i("actWidget.onReceive()","widgetId"+widgetManager.getAppWidgetIds(thisWidget));
-        Log.i("actWidget.onReceive()","Recibido evento con acción: "+intent.getAction());
+        // Vector con los id de los widget activos.
+        int[] widgetIds = widgetManager.getAppWidgetIds(thisWidget);
+
+        // Control
+        Log.i("actWidget.onReceive()","widgetId: "+widgetIds[0]);
+        Log.i("actWidget.onReceive()","Recibido evento con acción: "+receivedIntent.getAction());
+
+        // Estudio el evento que he recibido.
+        // if(receivedIntent.getAction().equals())
+
         // Fuerzo la actualización del Widget
-        onUpdate(context, widgetManager, WidgetIds);
-    }*/
+        onUpdate(context, widgetManager, widgetIds);
+    }
+    */
+
+    /////////////////////////////////
+    // IMPLEMENTACION DE LA RESPUESTA AL EVENTO DE ACTUALIZAR EL WIDGET
+    /////////////////////////////////
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager widMgr, int widId,
+                                          Bundle cambios)
+    {
+        RemoteViews vistas = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
+        int ancho, alto;
+        int medida;
+        int idImagenLogo;
+        // Primero capturo el ancho y alto mínimos del tamaño actual del widget.
+        ancho=cambios.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        alto=cambios.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        // Convierto las medidas en celdas ocupadas
+        ancho=getCellsForSize(ancho);
+        alto=getCellsForSize(alto);
+        // Veo cual es mayor
+        Log.i("actWidget.widgetChanged","Ancho por alto del widget en celdas: "+ancho+" x "+alto);
+        // Me quedo con el valor mas bajo.
+        medida=Math.min(ancho,alto);
+        // Elijo la imagen para el ImageButton del widget de medidas apropiadas.
+        switch (medida)
+        {
+            case 1:
+            default:
+                idImagenLogo = R.drawable.logo_transparente_1x1;
+                break;
+            case 2:
+                idImagenLogo = R.drawable.logo_transparente_2x2;
+                break;
+            case 3:
+                idImagenLogo = R.drawable.logo_transparente_3x3;
+                break;
+            case 4:
+                idImagenLogo = R.drawable.logo_transparente_4x4;
+                break;
+        }
+        vistas.setImageViewResource(R.id.ib_boton_rojo, idImagenLogo);
+        // Actualizo
+        widMgr.updateAppWidget(widId, vistas);
+    }
+
+    /**
+     * Devuelve el número de celdas ocupadas por el widget.
+     *
+     * @param size Tamaño del widget en dp.
+     * @return Tamaño del widget en numero de celdas.
+     */
+    private static int getCellsForSize(int size)
+    {
+        /*
+        int n = 2;
+        while (70 * n - 30 < size) {
+            ++n;
+        }
+        return n - 1;
+        */
+        // Formula precisa.
+        return (int)(Math.ceil(size + 30d)/70d);
+    }
 }
