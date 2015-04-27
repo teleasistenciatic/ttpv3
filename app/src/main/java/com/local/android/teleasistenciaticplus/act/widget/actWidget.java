@@ -115,7 +115,6 @@ public class actWidget extends AppWidgetProvider
         switch (medida)
         {
             case 1:
-            default:
                 idImagenLogo = R.drawable.logo_transparente_1x1;
                 break;
             case 2:
@@ -124,7 +123,8 @@ public class actWidget extends AppWidgetProvider
             case 3:
                 idImagenLogo = R.drawable.logo_transparente_3x3;
                 break;
-            case 4:
+            // case 4:
+            default:
                 idImagenLogo = R.drawable.logo_transparente_4x4;
                 break;
         }
@@ -148,7 +148,13 @@ public class actWidget extends AppWidgetProvider
         }
         return n - 1;
         */
-        // Formula precisa.
-        return (int)(Math.ceil(size + 30d)/70d);
+        // Formula precisa. Falla en altas resoluciones.
+        // return (int)(Math.ceil(size + 30d)/70d);
+
+        // Esta fórmula se comporta bien en todas las resoluciones hasta 4x4 de tamaño
+        if( size >= 320 )
+            return size/70;
+        else
+            return (size+15)/70;
     }
 }
