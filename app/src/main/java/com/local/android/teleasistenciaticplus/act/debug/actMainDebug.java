@@ -41,6 +41,7 @@ public class actMainDebug extends Activity {
                     "Uso de la memoria", //id 5
                     "Modo ducha", //id 6
                     "Google Services", //id 7
+                    "Google Maps", //id 8
             };
 
             /// Creación del adaptador con su String
@@ -85,6 +86,9 @@ public class actMainDebug extends Activity {
                             break;
                         case 7: //"Google Services"
                             actToLoad = actDebugGoogleServices.class;
+                            break;
+                        case 8: //"Google Maps"
+                            actToLoad = actDebugGoogleMaps.class;
                             break;
                     }
 

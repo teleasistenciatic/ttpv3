@@ -45,7 +45,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAwlFcksbWgpCtzWzVzsrUTTF0EbRwoqJI"/>
+            android:value="AIzaSyAwlFcksbWgpCtzWzVzsrUTTF0EbRwoqJI" />
         <!-- Fin cadenas de Google Maps -->
 
 
@@ -109,13 +109,15 @@
             android:label="@string/title_activity_act_debug_ducha"
             android:parentActivityName=".act.debug.actMainDebug" >
         </activity>
-
         <activity
             android:name=".act.debug.actDebugGoogleServices"
             android:label="@string/title_activity_act_debug_google_services"
             android:parentActivityName=".act.debug.actMainDebug" >
         </activity>
-
+        <activity
+            android:name=".act.debug.actDebugGoogleMaps"
+            android:label="@string/title_activity_act_debug_google_maps" >
+        </activity>
         <!-- Fin actividades Depuración -->
 
 
@@ -141,6 +143,7 @@
 
 
         <!-- Activades Botones Adicionales -->
+
 
         <!-- Modo Ducha -->
         <activity
@@ -175,6 +178,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/xml_configwidget" />
         </receiver>
+
 
     </application>
 
