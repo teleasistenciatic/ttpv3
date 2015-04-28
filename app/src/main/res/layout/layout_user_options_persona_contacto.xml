@@ -105,6 +105,15 @@
         android:background="@android:drawable/ic_menu_close_clear_cancel"
         android:onClick="user_options_persona_contacto_button_erase" />
 
+    <TextView
+        android:id="@+id/user_options_contacto_no_vacio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/user_options_contacto_no_vacio"
+        android:textColor="@color/grey">
+    </TextView>
+
     <Button
         android:id="@+id/user_options_persona_contacto_salir"
         android:layout_width="wrap_content"

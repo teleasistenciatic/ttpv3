@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Actividad princical del modo OFFLINE
+ * Actividad principal del modo OFFLINE
  *
  * @param
  */
@@ -59,18 +59,27 @@ public class actMain extends Activity {
         }
 
         /////////////////////////////////////////////////////////////
-        // Si no tiene datos personales (nombre + apellidos) en la aplicación se muestra el fragmento
+        // Si no tiene al menos un contacto de usuario, cargamos la ventana de contacto de usuario
         /////////////////////////////////////////////////////////////
+        boolean hasContactData = new AppSharedPreferences().hasPersonasContacto();
 
+        if ( !hasContactData) {
+            Intent intent = new Intent(this, actUserOptionsPersonaContacto.class);
+            startActivity(intent);
+        }
+
+        /////////////////////////////////////////////////////////////
+        // Si no tiene datos personales (nombre + apellidos)
+        /////////////////////////////////////////////////////////////
         boolean hasUserData = new AppSharedPreferences().hasUserData();
-        if (!hasUserData) {
 
+        if (!hasUserData) {
             //Carga de la ventana para la introducción del
             //Nombre y apellidos del usuario
             Intent intent = new Intent(this, actUserOptionsDatosPersonales.class);
             startActivity(intent);
-
         }
+
     }
 
     @Override

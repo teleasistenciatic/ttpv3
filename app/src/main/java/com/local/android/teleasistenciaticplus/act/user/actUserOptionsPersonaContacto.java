@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.local.android.teleasistenciaticplus.R;
+import com.local.android.teleasistenciaticplus.act.main.actMain;
+import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 import com.local.android.teleasistenciaticplus.lib.phone.PhoneContacts;
@@ -65,7 +67,14 @@ public class actUserOptionsPersonaContacto extends Activity {
             borradoTexteditName2.setVisibility( View.INVISIBLE );
         }
 
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onDestroy();
+        actMain.getInstance().finish(); //Si se pulsa el botón de BACK, eliminamos la Stack completa de llamadas
+        finish();
     }
 
 
@@ -267,7 +276,26 @@ public class actUserOptionsPersonaContacto extends Activity {
     }
 
     public void user_options_persona_contacto_salir_button(View view) {
-        finish();
+
+        /** No se deja salir al usuario hasta que introduzca un contacto **/
+
+        boolean hasContactData = new AppSharedPreferences().hasPersonasContacto();
+
+        if ( !hasContactData) {
+            /////////
+            //Feedback para que introduzca valores de nombre y apellidos
+            /////////
+            AlertDialogShow popup_conn = new AlertDialogShow();
+            popup_conn.setTitulo(getResources().getString(R.string.user_options_contactos_edit));
+
+            popup_conn.setMessage(getResources().getString(R.string.user_options_contactos_empty_edit));
+
+            popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
+            popup_conn.show(getFragmentManager(), "dummyTAG");
+            //Fin del mensaje de información
+        } else {
+            finish();
+        }
     }
 
 }

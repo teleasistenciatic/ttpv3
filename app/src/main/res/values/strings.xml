@@ -28,6 +28,7 @@
         <string name="user_options_nombre">Nombre*</string>
         <string name="user_options_apellidos">Apellidos*</string>
         <string name="user_options_nombre_apellidos_no_vacios">*Nombre y apellidos no pueden estar vacíos</string>
+        <string name="user_options_contacto_no_vacio">*Al menos es necesario un contacto</string>
 
     <!-- Fin cadenas opciones de usuario -->
 
@@ -72,6 +73,10 @@
         <string name="user_options_datos_personales_edit">Datos Personales</string>
         <string name="user_options_datos_personales_correct_edit">Modificación correcta</string>
         <string name="user_options_datos_personales_empty_name_surname_edit">El nombre y apellidos no pueden estar vacíos</string>
+
+        <string name="user_options_contactos_edit">Personas de contacto</string>
+        <string name="user_options_contactos_empty_edit">Introduzca al menos un contacto</string>
+
 
         <string name="user_options_persona_contacto_label">Persona de contacto (pulse para cambiar)</string>
 

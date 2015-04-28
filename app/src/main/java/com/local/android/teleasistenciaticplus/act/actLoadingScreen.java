@@ -49,14 +49,17 @@ public class actLoadingScreen extends Activity implements Constants {
             public void run() {
                 Intent mainIntent;
 
-
                 String valorCargaPantallaAviso = new AppSharedPreferences().getPreferenceData(Constants.NOMBRE_APP_SHARED_PREFERENCES_NO_MOSTRAR_AVISO_TARIFICACION);
 
-                // Se muestra la pantalla de aviso de tarificación de SMS
+                // Se muestra la pantalla de aviso de tarificación de SMS si no la ha ocultado (valor sharedpreferences)
                 if ( valorCargaPantallaAviso.length() > 0 ) { //el valor que se crea es "true"
+
                     mainIntent = new Intent().setClass(actLoadingScreen.this, actMain.class);
+
                 } else {
+
                     mainIntent = new Intent().setClass(actLoadingScreen.this, actMensajeTarificacionExtra.class);
+
                 }
 
                 startActivity(mainIntent);
