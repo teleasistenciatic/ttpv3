@@ -7,6 +7,8 @@ import android.util.Log;
 import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
 import com.local.android.teleasistenciaticplus.lib.sms.SmsLauncher;
+import com.local.android.teleasistenciaticplus.modelo.Constants;
+import com.local.android.teleasistenciaticplus.modelo.DebugLevel;
 import com.local.android.teleasistenciaticplus.modelo.TipoAviso;
 
 import java.io.BufferedReader;
@@ -249,16 +251,16 @@ public class Monitor {
 
                 switch (marca){
                     case 1:
-                        PlaySound.play(R.raw.sentado);
+                        if(Constants.DEBUG_LEVEL == DebugLevel.DEBUG) PlaySound.play(R.raw.sentado);
                         break;
                     case 2:
-                        PlaySound.play(R.raw.correr);
+                        if(Constants.DEBUG_LEVEL == DebugLevel.DEBUG) PlaySound.play(R.raw.correr);
                         break;
                     case 3:
-                        PlaySound.play(R.raw.golpe);
+                        if(Constants.DEBUG_LEVEL == DebugLevel.DEBUG) PlaySound.play(R.raw.golpe);
                         break;
                     case 4:
-                        PlaySound.play(R.raw.caida);
+                        if(Constants.DEBUG_LEVEL == DebugLevel.DEBUG) PlaySound.play(R.raw.caida);
 
                         //código para el envio de sms.
                         SmsLauncher miSmsLauncher = new SmsLauncher(TipoAviso.CAIDADETECTADA);
