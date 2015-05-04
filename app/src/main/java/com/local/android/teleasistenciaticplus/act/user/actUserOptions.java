@@ -29,7 +29,8 @@ public class actUserOptions extends Activity {
         /// String para el ListView
         String[] values = new String[]{
                 "Datos personales", // 0,
-                "Personas de contacto" // 1
+                "Personas de contacto", // 1
+                "Detección de caidas" //2
         };
 
         /// Creación del adaptador con su String
@@ -56,6 +57,9 @@ public class actUserOptions extends Activity {
                         break;
                     case 1: //"Personas de contacto"
                         actToLoad = actUserOptionsPersonaContacto.class;
+                        break;
+                    case 2: //"Detección de caidas"
+                        actToLoad = actUserOptionsCaidas.class;
                         break;
                 }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.local.android.teleasistenciaticplus.act.ducha.actModoDucha;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptions;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsDatosPersonales;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsPersonaContacto;
+import com.local.android.teleasistenciaticplus.lib.detectorCaidas.ServicioMuestreador;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
@@ -80,6 +82,23 @@ public class actMain extends Activity {
             startActivity(intent);
         }
 
+        ////////////////////////////////////////////////
+        // Se inicia el servicio de detección de caidas
+        /////////////////////////////////////////////
+        AppSharedPreferences mispreferences = new AppSharedPreferences();
+        String caidasActivas = mispreferences.getPreferenceData(Constants.CAIDAS);
+        if(caidasActivas.equals(Constants.ACTIVO)){   //si esta indicado arranco
+            Intent intentA= new Intent(this,ServicioMuestreador.class);
+            startService(intentA);
+            Log.i("Caidas","Caidas activo");
+        }else if( caidasActivas.equals(Constants.INACTIVO)){  //no hago nada.
+            Log.i("Caidas","Caidas inactivo");
+        }else{ //no existe la preferencia. crear e iniciar el servicio.
+            mispreferences.setPreferenceData(Constants.CAIDAS,Constants.ACTIVO);
+            Intent intentA= new Intent(this,ServicioMuestreador.class);
+            startService(intentA);
+            Log.i("Caidas","caidas creado y activo");
+        }
     }
 
     @Override

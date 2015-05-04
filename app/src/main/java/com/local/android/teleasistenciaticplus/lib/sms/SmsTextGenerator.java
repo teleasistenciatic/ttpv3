@@ -47,4 +47,9 @@ public class SmsTextGenerator {
 
     }
 
+    public String getTextGenerateSmsCaida(String phoneNumberDestination){
+        String smsBodyText = nombreApp + ": " + nombre + " " + apellidos + " ha generado un aviso de caida" + currentDateandTime;
+        return smsBodyText;
+    }
+
 }

@@ -52,6 +52,10 @@ public class SmsLauncher {
                     case IAMOK:
                         textoSms = new SmsTextGenerator().getTextGenerateSmsIamOK( telefonos[i] );
                         break;
+
+                    case CAIDADETECTADA:
+                        textoSms= new SmsTextGenerator().getTextGenerateSmsCaida( telefonos[i] );
+                        break;
                 }
 
                 //Envío "fisico" del SMS

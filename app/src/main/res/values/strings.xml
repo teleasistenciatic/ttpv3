@@ -116,6 +116,15 @@
         <string name="user_register_no_phone_contacs_title">No hay personas de contacto</string>
     <!-- Fin cadenas personas de contacto -->
 
+    <!-- Relacionados con detección de caidas -->
+        <string name="caidas_activar">Activar el modo de detección de caidas</string>
+        <string name="caidas_boton_arrancar">Iniciar</string>
+        <string name="caidas_boton_parar">Detener</string>
+        <string name="caidas_texto">Configuración de la detección de caidas</string>
+        <string name="caidas_texto_estado_activo">Servicio iniciado</string>
+        <string name="caidas_texto_estado_inactivo">Servicio detenido</string>
+    <!-- Fin cadenas detección de caidas -->
+
     <!-- Relacionadas SMS -->
         <string name="user_sms_sent">Enviado</string>
     <!-- fin Relacionadas SMS -->
@@ -140,6 +149,8 @@
 
     <!-- Mensajes del Widget -->
     <string name="widget_image_button_description">Pulse para iniciar Tele Asistencia TIC+</string>
+    <string name="title_activity_act_debug_caidas">actDebugCaidas</string>
+    <string name="title_activity_act_user_options_caidas">actUserOptionsCaidas</string>
     <!-- Fin Widget -->
 
 </resources>
