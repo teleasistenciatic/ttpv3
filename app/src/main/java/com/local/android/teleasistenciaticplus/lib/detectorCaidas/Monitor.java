@@ -9,6 +9,7 @@ import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
 import com.local.android.teleasistenciaticplus.lib.sms.SmsLauncher;
 import com.local.android.teleasistenciaticplus.modelo.Constants;
 import com.local.android.teleasistenciaticplus.modelo.DebugLevel;
+import com.local.android.teleasistenciaticplus.modelo.GlobalData;
 import com.local.android.teleasistenciaticplus.modelo.TipoAviso;
 
 import java.io.BufferedReader;
@@ -21,7 +22,7 @@ import java.util.LinkedList;
  *
  * Created by SAMUAN on 13/04/2015.
  */
-public class Monitor {
+public class Monitor implements Constants{
 
     private float gravedad=9.8066f;
 
@@ -42,6 +43,7 @@ public class Monitor {
     private long tiempoPasado;
 
     private Red red;
+    private Normalizador normalizador;
 
     public Monitor(Resources resources) {
     //    FileOperation.fileLogInitialize();
@@ -49,7 +51,7 @@ public class Monitor {
     //    FileOperation.fileLogWrite(TAG,"Umbral gravedad: "+umbralGravedad);
 
         cola =new LinkedList<Muestra>();
-
+Log.i("MONITOR","monitor inicio");
         tiempoInicio=System.currentTimeMillis();
         tiempoPasado=System.currentTimeMillis();
 
@@ -59,29 +61,43 @@ public class Monitor {
         LinkedList listaDatos2=new LinkedList();
         String marcador="dato0";
         double[] valoresD;
+        double[] medias = new double[0];
+        double[] desvis = new double[0];
         try{
-            InputStream flujo= resources.openRawResource(R.raw.pesosprueba);
+            int idenArchivoRed=resources.getIdentifier(ARCHIVO_RED,"raw", GlobalData.getAppContext().getPackageName());
+            Log.e("MONITOR","monitor idenArchivoRed "+idenArchivoRed);
+            InputStream flujo= resources.openRawResource(idenArchivoRed);
             BufferedReader lector= new BufferedReader(new InputStreamReader(flujo));
             while( (linea=lector.readLine())!=null ){
                 System.out.println(linea+" "+linea.length());
                 if(linea.length()>0 && !linea.startsWith("#")){
                     if(linea.contains("DATA1")){
-                        marcador="data1";
-                    }else if(linea.contains("DATA2")){
-                        marcador="data2";
+                        marcador = "data1";
+                    }else if(linea.contains("DATA2")) {
+                        marcador = "data2";
+                    }else if(linea.contains("DATA3")) {
+                        marcador = "data3";
+                    }else if(linea.contains("DATA4")){
+                        marcador = "data4";
                     }else{
                         String[] valores = linea.split(",");
                         if(valores.length>1){
-                            //  System.out.println("Tamaño vlaores "+valores.length);
+                              System.out.println("monitor Tamaño vlaores "+valores.length);
                             valoresD=new double[valores.length];
                             for(int i=0;i<valores.length;i++){
-                                //System.out.println(""+i);
+                              // System.out.println(""+i);
                                 valoresD[i]=Double.parseDouble(valores[i]);
                             }
                             if(marcador.equals("data1")){
                                 listaDatos1.add(valoresD);
                             }else if(marcador.equals("data2")){
                                 listaDatos2.add(valoresD);
+                            }else if(marcador.equals("data3")){
+                                System.out.println("monitor normali datos 3");
+                                medias=valoresD;
+                            }else if(marcador.equals("data4")){
+                                System.out.println("monitor normali datos 4");
+                                desvis=valoresD;
                             }
                         }
                     }
@@ -126,6 +142,10 @@ public class Monitor {
             biasB[j]=1;
         }
         red.setBiasB(biasB);
+
+        normalizador=new Normalizador();
+        normalizador.setMedia(medias);
+        normalizador.setDesviacion(desvis);
     }
 
     /**
@@ -233,7 +253,7 @@ public class Monitor {
             if(resul!=null){
                 //monitor devuelve los 8 valores
                 //ahora hay que normalizar.
-                resul=Normalizador.normaliza(resul);
+                resul=normalizador.normaliza(resul);
                 red.setVector_entrada(resul);
                 red.calcular();
                 double[] laSalida=red.getVector_salida();

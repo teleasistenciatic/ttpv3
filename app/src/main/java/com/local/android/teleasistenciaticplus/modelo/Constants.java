@@ -57,6 +57,7 @@ public interface Constants {
         public static final String ACTIVO = "activo";
         public static final String INACTIVO = "inactivo";
 
+        public static final String ARCHIVO_RED= "pesosprueba";
 }
 
 /*
