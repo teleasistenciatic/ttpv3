@@ -1,26 +1,26 @@
 package com.local.android.teleasistenciaticplus.act.ducha;
 
-import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.local.android.teleasistenciaticplus.R;
-import com.local.android.teleasistenciaticplus.act.main.actMain;
+import com.local.android.teleasistenciaticplus.lib.helper.AppDialog;
 import com.local.android.teleasistenciaticplus.lib.sms.SmsLauncher;
 import com.local.android.teleasistenciaticplus.modelo.Constants;
 import com.local.android.teleasistenciaticplus.modelo.GlobalData;
 import com.local.android.teleasistenciaticplus.modelo.TipoAviso;
 
-public class actDuchaCuentaAtras extends Activity {
+public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.AppDialogNeutralListener {
 
     //TAG para depuración
     private final String TAG = getClass().getSimpleName();
@@ -31,6 +31,9 @@ public class actDuchaCuentaAtras extends Activity {
     public int futureTime; //tiempo total de la cuenta atrás
     public int interval;  //intervalo de refresco del minutero
 
+    //Referencia al layout para modificar el color de fondo
+    public RelativeLayout rl;
+    public boolean changeBgColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,9 @@ public class actDuchaCuentaAtras extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.layout_act_ducha_cuenta_atras);
+
+        rl = (RelativeLayout) findViewById(R.id.miRelativeLayout);
+        changeBgColor = true;
 
         //Recuperamos del intent los minutos seleccionados por el usuario
         futureTime = (int) getIntent().getExtras().get("minutos");
@@ -95,9 +101,7 @@ public class actDuchaCuentaAtras extends Activity {
             @Override
             public void onTick(long millisUntilFinished) {
 
-                //TODO: ¿se puede reducir esta parte aplicando SimpleDateFormat?
-                //TODO: poner un efecto en pantalla si la alarma acústica se ha disparado
-
+                //menos de un minuto
                 if (millisUntilFinished  < 60000) {
                     mTextField.setText("00:" + millisUntilFinished / 1000);
 
@@ -106,6 +110,9 @@ public class actDuchaCuentaAtras extends Activity {
                     }
 
                     notificationManager.notify(0, beep_sound);
+
+                    rl.setBackgroundColor(  (changeBgColor) ? 0xffff0000 : 0xff33b5e5);
+                    changeBgColor = !changeBgColor;
 
                 } else {
 
@@ -128,33 +135,24 @@ public class actDuchaCuentaAtras extends Activity {
 
                 }
 
-
             }
 
             @Override
             public void onFinish() {
 
-                mTextField.setText("sms");
-                //Enviar los tres SMS
-                //Tipo de SMS : envio de ducha
-
                 SmsLauncher miSmsLauncher = new SmsLauncher( TipoAviso.DUCHANOATENDIDA  );
-                Boolean listaContactosVacia = miSmsLauncher.generateAndSend();
 
-                //TODO Mostrar en un diálogo que el SMS se ha enviado
-                Toast.makeText(getBaseContext(), "AVISO: SMS de tipo DUCHA enviado." , Toast.LENGTH_LONG).show();
+                //mostramos diálogo de sms enviado
+                AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE,1,"SMS ENVIADO","Se ha enviado un SMS a sus familiares por una alerta de ducha","Cerrar", "sin_uso");
+                newFragment.show(getFragmentManager(),"dialog");
 
-                Intent intent = new Intent(GlobalData.getAppContext(), actMain.class);
-                intent.putExtra("sms_ducha_enviado",true);
-
-                startActivity(intent);
 
                 if( Constants.SHOW_ANIMATION ) {
 
                     overridePendingTransition(R.animator.animation2, R.animator.animation1);
 
                 }
-                finish();
+
             }
         }.start();
 
@@ -162,14 +160,15 @@ public class actDuchaCuentaAtras extends Activity {
 
     public void cancelCountDown(View v) {
 
-
         TheCountDown.cancel();
-
-        TextView mTextField = (TextView) findViewById(R.id.mTextField);
-        mTextField.setText("00:00");
+        finish();
 
     }
 
+    public void onAccionNeutral(DialogFragment dialog){
 
+        finish();
+
+    }
 
 }

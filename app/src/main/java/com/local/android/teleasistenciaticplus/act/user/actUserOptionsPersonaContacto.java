@@ -48,23 +48,23 @@ public class actUserOptionsPersonaContacto extends Activity {
         TextView texteditName2 = (TextView) findViewById(R.id.user_options_persona_contacto_name_text_2);
         ImageButton borradoTexteditName2 = (ImageButton) findViewById(R.id.button_user_options_persona_contacto_3_borrar);
 
-        textedit.setText( personasContacto[0] );
-        texteditName.setText( personasContacto[1] );
+        textedit.setText(personasContacto[0]);
+        texteditName.setText(personasContacto[1]);
         //Sólo se muestra el botón de borrado en cuando exista un texto
-        if ( personasContacto[0].length() == 0 ) {
-            borradoTexteditName.setVisibility( View.INVISIBLE );
+        if (personasContacto[0].length() == 0) {
+            borradoTexteditName.setVisibility(View.INVISIBLE);
         }
 
-        textedit1.setText( personasContacto[2] );
-        texteditName1.setText( personasContacto[3] );
-        if ( personasContacto[2].length() == 0 ) {
-            borradoTexteditName1.setVisibility( View.INVISIBLE );
+        textedit1.setText(personasContacto[2]);
+        texteditName1.setText(personasContacto[3]);
+        if (personasContacto[2].length() == 0) {
+            borradoTexteditName1.setVisibility(View.INVISIBLE);
         }
 
-        textedit2.setText( personasContacto[4] );
-        texteditName2.setText( personasContacto[5] );
-        if ( personasContacto[4].length() == 0 ) {
-            borradoTexteditName2.setVisibility( View.INVISIBLE );
+        textedit2.setText(personasContacto[4]);
+        texteditName2.setText(personasContacto[5]);
+        if (personasContacto[4].length() == 0) {
+            borradoTexteditName2.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -138,6 +138,7 @@ public class actUserOptionsPersonaContacto extends Activity {
 
     /**
      * Listener de la pulsación de botones para el borrado de contactos
+     *
      * @param view
      */
     public void user_options_persona_contacto_button_erase(View view) {
@@ -171,16 +172,16 @@ public class actUserOptionsPersonaContacto extends Activity {
 
         // Borrado del contacto seleccionado
         // 1. borrado del sharedpreferences
-        new AppSharedPreferences().deletePersonasContactobyId( contacto_a_borrar );
+        new AppSharedPreferences().deletePersonasContactobyId(contacto_a_borrar);
 
         // 2. borrado de la interfaz
         textedit.setText("");
         texteditName.setText("");
 
         // 3. Se elimina el botón con la opción de borrado
-        borradoTexteditName.setVisibility( View.INVISIBLE );
+        borradoTexteditName.setVisibility(View.INVISIBLE);
 
-        AppLog.i("Contacto borrado de la lista", ""+ textedit.getText() + " : " + texteditName.getText() + " " + contacto_a_borrar );
+        AppLog.i("Contacto borrado de la lista", "" + textedit.getText() + " : " + texteditName.getText() + " " + contacto_a_borrar);
 
     }
 
@@ -217,7 +218,7 @@ public class actUserOptionsPersonaContacto extends Activity {
                     texteditName.setText(contactDataMap.get("phoneNumber").toString());
 
                     ImageButton borradoTexteditName = (ImageButton) findViewById(R.id.button_user_options_persona_contacto_1_borrar);
-                    borradoTexteditName.setVisibility( View.VISIBLE );
+                    borradoTexteditName.setVisibility(View.VISIBLE);
 
                     AppLog.i("Contactos", contactDataMap.toString());
                 }
@@ -232,7 +233,7 @@ public class actUserOptionsPersonaContacto extends Activity {
                     texteditName1.setText(contactDataMap.get("phoneNumber").toString());
 
                     ImageButton borradoTexteditName = (ImageButton) findViewById(R.id.button_user_options_persona_contacto_2_borrar);
-                    borradoTexteditName.setVisibility( View.VISIBLE );
+                    borradoTexteditName.setVisibility(View.VISIBLE);
 
                     AppLog.i("Contactos", contactDataMap.toString());
 
@@ -248,7 +249,7 @@ public class actUserOptionsPersonaContacto extends Activity {
                     texteditName2.setText(contactDataMap.get("phoneNumber").toString());
 
                     ImageButton borradoTexteditName = (ImageButton) findViewById(R.id.button_user_options_persona_contacto_3_borrar);
-                    borradoTexteditName.setVisibility( View.VISIBLE );
+                    borradoTexteditName.setVisibility(View.VISIBLE);
 
                     AppLog.i("Contactos", contactDataMap.toString());
 
@@ -268,10 +269,10 @@ public class actUserOptionsPersonaContacto extends Activity {
         //////////////////////////////////////////////
 
         AppSharedPreferences userSharedPreferences = new AppSharedPreferences();
-        userSharedPreferences.setPersonasContacto(  textedit.getText().toString(), texteditName.getText().toString(),
-                                                    textedit1.getText().toString(), texteditName1.getText().toString(),
-                                                    textedit2.getText().toString(), texteditName2.getText().toString()
-                                                 );
+        userSharedPreferences.setPersonasContacto(textedit.getText().toString(), texteditName.getText().toString(),
+                textedit1.getText().toString(), texteditName1.getText().toString(),
+                textedit2.getText().toString(), texteditName2.getText().toString()
+        );
 
     }
 
@@ -281,7 +282,7 @@ public class actUserOptionsPersonaContacto extends Activity {
 
         boolean hasContactData = new AppSharedPreferences().hasPersonasContacto();
 
-        if ( !hasContactData) {
+        if (!hasContactData) {
             /////////
             //Feedback para que introduzca valores de nombre y apellidos
             /////////

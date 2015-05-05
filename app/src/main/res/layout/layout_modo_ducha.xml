@@ -32,7 +32,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textColor="#ffFFFFFF"
-        android:textSize="24dp"
+        android:textSize="34dp"
         android:onClick="activarDucha"
         android:nestedScrollingEnabled="false" />
 
@@ -41,12 +41,12 @@
         android:layout_height="wrap_content"
         android:text="@string/modo_ducha_boton_30_minutos"
         android:id="@+id/btn_ducha_30_minutos"
-        android:layout_below="@+id/btn_ducha_15_minutos"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="42dp"
         android:textColor="#ffFFFFFF"
-        android:textSize="24dp"
-        android:onClick="activarDucha" />
+        android:textSize="34dp"
+        android:onClick="activarDucha"
+        android:layout_above="@+id/btn_ducha_45_minutos"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="45dp"
         android:textColor="#ffFFFFFF"
-        android:textSize="24dp"
+        android:textSize="34dp"
         android:onClick="activarDucha" />
 
 </RelativeLayout>
