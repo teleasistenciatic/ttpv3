@@ -1,9 +1,11 @@
 package com.local.android.teleasistenciaticplus.act.user;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,14 +14,14 @@ import android.widget.TextView;
 
 import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.act.main.actMain;
-import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
+import com.local.android.teleasistenciaticplus.lib.helper.AppDialog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 import com.local.android.teleasistenciaticplus.lib.phone.PhoneContacts;
 
 import java.util.Map;
 
-public class actUserOptionsPersonaContacto extends Activity {
+public class actUserOptionsPersonaContacto extends FragmentActivity implements AppDialog.AppDialogNeutralListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,17 +288,24 @@ public class actUserOptionsPersonaContacto extends Activity {
             /////////
             //Feedback para que introduzca valores de nombre y apellidos
             /////////
-            AlertDialogShow popup_conn = new AlertDialogShow();
-            popup_conn.setTitulo(getResources().getString(R.string.user_options_contactos_edit));
-
-            popup_conn.setMessage(getResources().getString(R.string.user_options_contactos_empty_edit));
-
-            popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
-            popup_conn.show(getFragmentManager(), "dummyTAG");
+            AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE,1,
+                    getResources().getString(R.string.user_options_contactos_edit),
+                    getResources().getString(R.string.user_options_contactos_empty_edit),
+                    getResources().getString(R.string.close_window),
+                    "sin_uso");
+            newFragment.show(getFragmentManager(),"dialog");
             //Fin del mensaje de información
+
         } else {
             finish();
         }
+    }
+
+    //Implementación del interfaz de diálogo
+    public void onAccionNeutral(DialogFragment dialog){
+
+        //finish();
+
     }
 
 }

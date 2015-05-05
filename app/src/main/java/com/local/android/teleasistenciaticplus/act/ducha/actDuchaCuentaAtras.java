@@ -14,11 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.local.android.teleasistenciaticplus.R;
+import com.local.android.teleasistenciaticplus.act.main.actMain;
 import com.local.android.teleasistenciaticplus.lib.helper.AppDialog;
 import com.local.android.teleasistenciaticplus.lib.sms.SmsLauncher;
 import com.local.android.teleasistenciaticplus.modelo.Constants;
 import com.local.android.teleasistenciaticplus.modelo.GlobalData;
 import com.local.android.teleasistenciaticplus.modelo.TipoAviso;
+
+import java.util.Date;
 
 public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.AppDialogNeutralListener {
 
@@ -34,6 +37,7 @@ public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.A
     //Referencia al layout para modificar el color de fondo
     public RelativeLayout rl;
     public boolean changeBgColor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,8 +147,15 @@ public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.A
                 SmsLauncher miSmsLauncher = new SmsLauncher( TipoAviso.DUCHANOATENDIDA  );
 
                 //mostramos diálogo de sms enviado
-                AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE,1,"SMS ENVIADO","Se ha enviado un SMS a sus familiares por una alerta de ducha","Cerrar", "sin_uso");
+                AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE,1,
+                        "SMS ENVIADO",
+                        "Se ha enviado un SMS a sus contactos por una alerta de ducha",
+                        "Cerrar",
+                        "sin_uso");
                 newFragment.show(getFragmentManager(),"dialog");
+
+                //pasamos la fecha de envío del SMS a la actividad principal actMAin
+                actMain.getInstance().actualizarUltimoSMSEnviado(new Date());
 
 
                 if( Constants.SHOW_ANIMATION ) {
@@ -165,6 +176,7 @@ public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.A
 
     }
 
+    //Implementación del interfaz de diálogo
     public void onAccionNeutral(DialogFragment dialog){
 
         finish();

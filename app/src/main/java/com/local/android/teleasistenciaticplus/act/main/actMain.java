@@ -1,10 +1,10 @@
 package com.local.android.teleasistenciaticplus.act.main;
 
-import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +19,7 @@ import com.local.android.teleasistenciaticplus.act.user.actUserOptions;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsDatosPersonales;
 import com.local.android.teleasistenciaticplus.act.user.actUserOptionsPersonaContacto;
 import com.local.android.teleasistenciaticplus.lib.detectorCaidas.ServicioMuestreador;
+import com.local.android.teleasistenciaticplus.lib.helper.AppDialog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
@@ -36,12 +37,16 @@ import java.util.Date;
  * @param
  */
 
-public class actMain extends Activity {
+public class actMain extends FragmentActivity implements AppDialog.AppDialogNeutralListener {
+
+    //TAG para depuración
+    private final String TAG = getClass().getSimpleName() + "--> ";
 
     ImageButton SMSAlertButton;
     ImageButton SMSOKButton;
 
     static actMain instanciaActMain;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,6 @@ public class actMain extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
-
 
 
         SMSAlertButton = (ImageButton) findViewById(R.id.tfmButton);
@@ -70,6 +74,7 @@ public class actMain extends Activity {
             startActivity(intent);
         }
 
+
         /////////////////////////////////////////////////////////////
         // Si no tiene datos personales (nombre + apellidos)
         /////////////////////////////////////////////////////////////
@@ -82,6 +87,16 @@ public class actMain extends Activity {
             startActivity(intent);
         }
 
+        //Si se envió con anterioridad algún sms, se actualiza el texto informativo
+        boolean hasLastSMS = new AppSharedPreferences().hasPreferenceData(Constants.NOMBRE_APP_SHARED_PREFERENCES_DATETIME_ULTIMO_SMS_ENVIADO);
+        if(hasLastSMS){
+
+            TextView tvUltimoSMSEnviado = (TextView) findViewById(R.id.tvUltimoSMSEnviado);
+            tvUltimoSMSEnviado.setText("Último SMS enviado el " +
+                            new AppSharedPreferences().getPreferenceData(Constants.NOMBRE_APP_SHARED_PREFERENCES_DATETIME_ULTIMO_SMS_ENVIADO)
+            );
+        }
+
         ////////////////////////////////////////////////
         // Se inicia el servicio de detección de caidas
         /////////////////////////////////////////////
@@ -90,29 +105,30 @@ public class actMain extends Activity {
         if(caidasActivas.equals(Constants.ACTIVO)){   //si esta indicado arranco
             Intent intentA= new Intent(this,ServicioMuestreador.class);
             startService(intentA);
-            Log.i("Caidas","Caidas activo");
+            AppLog.i(TAG,"Caidas activo");
         }else if( caidasActivas.equals(Constants.INACTIVO)){  //no hago nada.
-            Log.i("Caidas","Caidas inactivo");
+            AppLog.i(TAG,"Caidas inactivo");
         }else{ //no existe la preferencia. crear e iniciar el servicio.
             mispreferences.setPreferenceData(Constants.CAIDAS,Constants.ACTIVO);
             Intent intentA= new Intent(this,ServicioMuestreador.class);
             startService(intentA);
-            Log.i("Caidas","caidas creado y activo");
+            AppLog.i(TAG,"caidas creado y activo");
         }
+
     }
 
     @Override
     protected void onStart() {
-        super.onStart();
-        //Toast.makeText(getBaseContext(), "OnStart!" , Toast.LENGTH_LONG).show();
 
-        //TODO Recibir el intent del modo ducha para actualizar el texto de último sms enviado.
+        super.onStart();
 
     }
 
     public static actMain getInstance(){
         return instanciaActMain;
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -258,27 +274,16 @@ public class actMain extends Activity {
             /////////
             //Genera una alerta en caso de que no tengamos asignados los contactos
             /////////
-            AlertDialogShow popup_conn = new AlertDialogShow();
+            //Se abre el menú de personas de contacto
+            */
+            AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE,1,
+                    "Contactos no disponibles",
+                    "No se han encontrado contactos almacenados. Introduzca al menos un contacto",
+                    getResources().getString(R.string.aceptar),
+                    "sin_uso");
+            newFragment.show(getFragmentManager(),"dialog");
+            //Fin del mensaje de información
 
-            popup_conn.setTitulo(getResources().getString(R.string.user_register_no_phone_contacs_title));
-            popup_conn.setMessage(getResources().getString(R.string.user_register_no_phone_contacs));
-            popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
-            popup_conn.show(getFragmentManager(), "dummyTAG");
-
-            //Se abre el menú de personas de contacto*/
-            //TODO solucionar la llamada del dialog para que solo responda al botón cerrar
-
-            Toast.makeText(getBaseContext(), getResources().getString(R.string.user_register_no_phone_contacs), Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(this, actUserOptionsPersonaContacto.class);
-
-            startActivity(intent);
-
-            if (Constants.SHOW_ANIMATION) {
-
-                overridePendingTransition(R.animator.animation2, R.animator.animation1);
-
-            }
         }
 
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
@@ -287,34 +292,6 @@ public class actMain extends Activity {
 
         Boolean hayListaContactos = miSmsLauncher.generateAndSend();
 
-        /*
-        //Operación de envío de SMS
-
-
-        SmsTextGenerator miSmsTextGenerator = new SmsTextGenerator();
-        if ( personasContacto[1].length() > 0) {
-
-            // Se envía el SMS
-            //SmsDispatcher miSmsDispatcher = new SmsDispatcher(personasContacto[1],"Hola");
-            //miSmsDispatcher.send();
-            String textoAviso = miSmsTextGenerator.getTextGenerateSmsAviso(personasContacto[1]);
-            new SmsDispatcher(personasContacto[1], textoAviso ).send();
-        }
-
-        if ( personasContacto[3].length() > 0) {
-
-            String textoAviso = miSmsTextGenerator.getTextGenerateSmsAviso(personasContacto[3]);
-            new SmsDispatcher(personasContacto[3], textoAviso ).send();
-        }
-
-        if ( personasContacto[5].length() > 0) {
-
-            String textoAviso = miSmsTextGenerator.getTextGenerateSmsAviso(personasContacto[5]);
-            new SmsDispatcher(personasContacto[5], textoAviso ).send();
-        }
-
-        miSmsTextGenerator = null; */
-
 
         //TODO: mejorar con el control de errores de SMS
 
@@ -322,28 +299,7 @@ public class actMain extends Activity {
 
         if ((personasContacto[1].length() + personasContacto[3].length() + personasContacto[5].length()) > 0) {
 
-            //Actualizamos el tiempo del envío del mensaje
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MM-yyyy 'a las' HH:mm:ss");
-
-            String currentDateandTime = sdf.format(new Date());
-
-            //Mostramos el texto en la pantalla
-            TextView tvUltimoSMSEnviado = (TextView) findViewById(R.id.tvUltimoSMSEnviado);
-
-            tvUltimoSMSEnviado.setText("Último SMS enviado el " + currentDateandTime);
-
-            AppLog.i("sendAvisoSms", "SMS enviado: " + tvUltimoSMSEnviado.getText());
-
-            //TODO: almacenar en sharedpreferences la fecha del último SMS que se envió
-
-
-            /////////
-            //Toast de confirmación de envío
-            /////////
-            //Toast.makeText(getBaseContext(), getResources().getString(R.string.user_sms_sent) ,
-            //        Toast.LENGTH_LONG).show();
-            //Fin del mensaje de alerta
-
+            actualizarUltimoSMSEnviado(null);
 
             //Avisamos al usuario de que ha enviado el SMS con un sonido
             if (Constants.PLAY_SOUNDS) {
@@ -384,71 +340,28 @@ public class actMain extends Activity {
 
         if (!hayPersonasContactoConTelefono) {
 
-            Toast.makeText(getBaseContext(), getResources().getString(R.string.user_register_no_phone_contacs), Toast.LENGTH_LONG).show();
+            AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE,1,
+                    "Contactos no disponibles",
+                    "No se han encontrado contactos almacenados. Introduzca al menos un contacto",
+                    getResources().getString(R.string.aceptar),
+                    "sin_uso");
+            newFragment.show(getFragmentManager(),"dialog");
+            //Fin del mensaje de información
 
-            Intent intent = new Intent(this, actUserOptionsPersonaContacto.class);
-
-            startActivity(intent);
-
-            if (Constants.SHOW_ANIMATION) {
-
-                overridePendingTransition(R.animator.animation2, R.animator.animation1);
-
-            }
         }
 
         //Operación de envío de SMS
-        //TODO: controlar los caracteres especiales
 
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
         SmsLauncher miSmsLauncher = new SmsLauncher(TipoAviso.IAMOK);
 
         Boolean hayListaContactos = miSmsLauncher.generateAndSend();
 
-        /*if ( personasContacto[1].length() > 0) {
-
-            new SmsTextGenerator().getTextGenerateSmsIamOK(personasContacto[1]);
-
-        }
-
-        if ( personasContacto[3].length() > 0) {
-
-            new SmsTextGenerator().getTextGenerateSmsIamOK(personasContacto[3]);
-
-        }
-
-        if ( personasContacto[5].length() > 0) {
-
-            new SmsTextGenerator().getTextGenerateSmsIamOK(personasContacto[5]);
-
-        }*/
-
-
         //Si se ha mandado algún SMS...
 
         if ((personasContacto[1].length() + personasContacto[3].length() + personasContacto[5].length()) > 0) {
 
-            //Actualizamos el tiempo del envío del mensaje
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MM-yyyy 'a las' HH:mm:ss");
-
-            String currentDateandTime = sdf.format(new Date());
-
-            //Mostramos el texto en la pantalla
-            TextView tvUltimoSMSEnviado = (TextView) findViewById(R.id.tvUltimoSMSEnviado);
-
-            tvUltimoSMSEnviado.setText("Último SMS enviado el " + currentDateandTime);
-
-            AppLog.i("sendAvisoSms", "SMS enviado: " + tvUltimoSMSEnviado.getText());
-
-            //TODO: almacenar en sharedpreferences la fecha del último SMS que se envió
-
-
-            /////////
-            //Toast de confirmación de envío
-            /////////
-            //Toast.makeText(getBaseContext(), getResources().getString(R.string.user_sms_sent) ,
-            //        Toast.LENGTH_LONG).show();
-            //Fin del mensaje de alerta
+            actualizarUltimoSMSEnviado(null);
 
 
             //Avisamos al usuario de que ha enviado el SMS con un sonido
@@ -475,4 +388,39 @@ public class actMain extends Activity {
         }
 
     }
+
+
+    public void actualizarUltimoSMSEnviado (Date date) {
+
+        //Actualizamos el tiempo del envío del mensaje
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MM-yyyy 'a las' HH:mm:ss");
+        String currentDateandTime;
+        if (date == null) currentDateandTime = sdf.format(new Date());
+        else currentDateandTime = sdf.format(date);
+
+        //Mostramos el texto en la pantalla
+        TextView tvUltimoSMSEnviado = (TextView) findViewById(R.id.tvUltimoSMSEnviado);
+
+        tvUltimoSMSEnviado.setText("Último SMS enviado el " + currentDateandTime);
+
+        new AppSharedPreferences().setPreferenceData(Constants.NOMBRE_APP_SHARED_PREFERENCES_DATETIME_ULTIMO_SMS_ENVIADO, currentDateandTime );
+    }
+
+
+
+    //Implementación del interfaz de diálogo
+    public void onAccionNeutral(DialogFragment dialog){
+
+        Intent intent = new Intent(this, actUserOptionsPersonaContacto.class);
+
+        startActivity(intent);
+
+        if (Constants.SHOW_ANIMATION) {
+
+            overridePendingTransition(R.animator.animation2, R.animator.animation1);
+
+        }
+
+    }
+
 }

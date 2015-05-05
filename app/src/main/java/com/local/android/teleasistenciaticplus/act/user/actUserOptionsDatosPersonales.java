@@ -1,7 +1,8 @@
 package com.local.android.teleasistenciaticplus.act.user;
 
-import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,10 +10,11 @@ import android.widget.TextView;
 
 import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.act.main.actMain;
-import com.local.android.teleasistenciaticplus.lib.helper.AlertDialogShow;
+import com.local.android.teleasistenciaticplus.lib.helper.AppDialog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
 
-public class actUserOptionsDatosPersonales extends Activity {
+
+public class actUserOptionsDatosPersonales extends FragmentActivity implements AppDialog.AppDialogNeutralListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,20 +54,6 @@ public class actUserOptionsDatosPersonales extends Activity {
             AppSharedPreferences userSharedPreferences = new AppSharedPreferences();
             userSharedPreferences.setUserData(textEditNombre.getText().toString(), textEditApellidos.getText().toString());
 
-            /*
-            /////////
-            //Feedback al usuario tras la actualización
-            /////////
-            AlertDialogShow popup_conn = new AlertDialogShow();
-            popup_conn.setTitulo(getResources().getString(R.string.user_options_datos_personales_edit));
-
-            popup_conn.setMessage(getResources().getString(R.string.user_options_datos_personales_correct_edit));
-
-            popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
-            popup_conn.show(getFragmentManager(), "dummyTAG");
-            //Fin del mensaje de información
-            */
-
             // Para acelerar la UI, simplemente se guarda y cierra en una pulsación
             finish();
 
@@ -74,23 +62,17 @@ public class actUserOptionsDatosPersonales extends Activity {
             /////////
             //Feedback para que introduzca valores de nombre y apellidos
             /////////
-            AlertDialogShow popup_conn = new AlertDialogShow();
-            popup_conn.setTitulo(getResources().getString(R.string.user_options_datos_personales_edit));
-
-            popup_conn.setMessage(getResources().getString(R.string.user_options_datos_personales_empty_name_surname_edit));
-
-            popup_conn.setLabelNeutral(getResources().getString(R.string.close_window));
-            popup_conn.show(getFragmentManager(), "dummyTAG");
+            AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE,1,
+                    getResources().getString(R.string.user_options_datos_personales_edit),
+                    getResources().getString(R.string.user_options_datos_personales_empty_name_surname_edit),
+                    getResources().getString(R.string.close_window),
+                    "sin_uso");
+            newFragment.show(getFragmentManager(),"dialog");
             //Fin del mensaje de información
 
         }
 
     }
-
-    /*
-    public void user_options_datos_personales_exit(View view) {
-        finish();
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,5 +95,13 @@ public class actUserOptionsDatosPersonales extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //Implementación del interfaz de diálogo
+    public void onAccionNeutral(DialogFragment dialog){
+
+        //finish();
+
     }
 }

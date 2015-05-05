@@ -58,6 +58,8 @@ public interface Constants {
         public static final String INACTIVO = "inactivo";
 
         public static final String ARCHIVO_RED= "pesosprueba";
+
+        public static final String NOMBRE_APP_SHARED_PREFERENCES_DATETIME_ULTIMO_SMS_ENVIADO = "ultimosmsenviado";
 }
 
 /*
