@@ -94,7 +94,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/tvUltimoSMSEnviado"
                 android:textStyle="bold"
-                android:elegantTextHeight="false"
                 android:gravity="center_horizontal" />
 
         </LinearLayout>

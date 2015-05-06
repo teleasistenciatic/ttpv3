@@ -22,7 +22,7 @@ public class actMensajeTarificacionExtra extends Activity {
     /**
      * Pulsado del boton de aceptar advertencia de tarificacion adicional
      *
-     * @param view
+     * @param view Vista del botón
      */
     public void aceptar_advertencia_tarificacion_button(View view) {
 

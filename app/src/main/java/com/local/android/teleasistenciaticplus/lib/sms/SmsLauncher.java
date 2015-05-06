@@ -36,7 +36,7 @@ public class SmsLauncher {
 
             if  ( (i == 1) || (i == 3) || (i == 5) ) {
                 //Envio del SMS
-                // Se genera un aviso u otro en vase a la clase que lo llama
+                // Se genera un aviso u otro en base a la clase que lo llama
                 String textoSms = null;
 
                 switch (aviso) {

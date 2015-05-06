@@ -4,7 +4,5 @@
     android:minHeight="40dp"
     android:previewImage="@drawable/logo_transparente_250"
     android:initialLayout="@layout/layout_widget"
-    android:resizeMode="horizontal|vertical"
-    android:widgetCategory="home_screen"
-    android:initialKeyguardLayout="@layout/layout_widget">
+    android:resizeMode="horizontal|vertical">
 </appwidget-provider>

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.local.android.teleasistenciaticplus.R;
 import com.local.android.teleasistenciaticplus.act.main.actMain;
 import com.local.android.teleasistenciaticplus.lib.helper.AppDialog;
+import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
 import com.local.android.teleasistenciaticplus.lib.sms.SmsLauncher;
 import com.local.android.teleasistenciaticplus.modelo.Constants;
 import com.local.android.teleasistenciaticplus.modelo.GlobalData;
@@ -28,15 +29,15 @@ public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.A
     //TAG para depuración
     private final String TAG = getClass().getSimpleName();
 
-    public CountDownTimer TheCountDown; //clase para la cuenta atrás
+    private CountDownTimer TheCountDown; //clase para la cuenta atrás
 
     //párametros para la clase CountDownTimer
-    public int futureTime; //tiempo total de la cuenta atrás
-    public int interval;  //intervalo de refresco del minutero
+    private int futureTime; //tiempo total de la cuenta atrás
+    private int interval;  //intervalo de refresco del minutero
 
     //Referencia al layout para modificar el color de fondo
-    public RelativeLayout rl;
-    public boolean changeBgColor;
+    private RelativeLayout rl;
+    private boolean changeBgColor;
 
 
     @Override
@@ -83,7 +84,7 @@ public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.A
         return super.onOptionsItemSelected(item);
     }
 
-    public void startCountDown() {
+    void startCountDown() {
 
         //Capturamos el tiempo (en minutos) introducido por el usuario
         final TextView mTextField = (TextView) findViewById(R.id.mTextField);
@@ -144,23 +145,30 @@ public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.A
             @Override
             public void onFinish() {
 
+                //enviamos el sms
                 SmsLauncher miSmsLauncher = new SmsLauncher( TipoAviso.DUCHANOATENDIDA  );
+                Boolean hayListaContactos = miSmsLauncher.generateAndSend();
 
-                //mostramos diálogo de sms enviado
-                AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE,1,
-                        "SMS ENVIADO",
-                        "Se ha enviado un SMS a sus contactos por una alerta de ducha",
-                        "Cerrar",
-                        "sin_uso");
-                newFragment.show(getFragmentManager(),"dialog");
+                if(hayListaContactos) {
 
-                //pasamos la fecha de envío del SMS a la actividad principal actMAin
-                actMain.getInstance().actualizarUltimoSMSEnviado(new Date());
+                    //mostramos diálogo de sms enviado
+                    AppDialog newFragment = AppDialog.newInstance(AppDialog.tipoDialogo.SIMPLE, 1,
+                            "SMS ENVIADO",
+                            "Se ha enviado un SMS a sus contactos por una alerta de ducha",
+                            "Cerrar",
+                            "sin_uso");
+                    newFragment.show(getFragmentManager(), "dialog");
+
+                    //pasamos la fecha de envío del SMS a la actividad principal actMAin
+                    actMain.getInstance().actualizarUltimoSMSEnviado(new Date());
+                } else{
+                    //TODO: error en el envío por no haber contactos
+                }
 
 
                 if( Constants.SHOW_ANIMATION ) {
 
-                    overridePendingTransition(R.animator.animation2, R.animator.animation1);
+                    overridePendingTransition(R.anim.animation2, R.anim.animation1);
 
                 }
 
@@ -172,6 +180,9 @@ public class actDuchaCuentaAtras extends FragmentActivity implements AppDialog.A
     public void cancelCountDown(View v) {
 
         TheCountDown.cancel();
+
+        if( Constants.PLAY_SOUNDS ) PlaySound.play(R.raw.modo_ducha_cancelado);
+
         finish();
 
     }

@@ -79,7 +79,7 @@ public class actModoDucha extends Activity {
 
         if( Constants.SHOW_ANIMATION ) {
 
-            overridePendingTransition(R.animator.animation2, R.animator.animation1);
+            overridePendingTransition(R.anim.animation2, R.anim.animation1);
 
         }
         finish();

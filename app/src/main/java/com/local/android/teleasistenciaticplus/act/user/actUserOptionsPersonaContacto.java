@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.local.android.teleasistenciaticplus.R;
-import com.local.android.teleasistenciaticplus.act.main.actMain;
 import com.local.android.teleasistenciaticplus.lib.helper.AppDialog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppLog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
@@ -71,14 +70,14 @@ public class actUserOptionsPersonaContacto extends FragmentActivity implements A
 
     }
 
-
+    /*
     @Override
     public void onBackPressed() {
         super.onDestroy();
         actMain.getInstance().finish(); //Si se pulsa el botón de BACK, eliminamos la Stack completa de llamadas
         finish();
     }
-
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

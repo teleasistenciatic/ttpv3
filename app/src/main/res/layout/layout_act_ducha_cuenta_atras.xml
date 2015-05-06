@@ -24,7 +24,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DETENER"
+        android:text="@string/modo_ducha_boton_detener"
         android:id="@+id/btnCancelCountDown"
         android:onClick="cancelCountDown"
         android:layout_below="@+id/mTextField"

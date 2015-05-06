@@ -32,9 +32,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Actividad principal del modo OFFLINE
+ * Actividad principal
  *
- * @param
+ * @author TeleasistenciaTIC+ Team
  */
 
 public class actMain extends FragmentActivity implements AppDialog.AppDialogNeutralListener {
@@ -42,8 +42,8 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
     //TAG para depuración
     private final String TAG = getClass().getSimpleName() + "--> ";
 
-    ImageButton SMSAlertButton;
-    ImageButton SMSOKButton;
+    private ImageButton SMSAlertButton;
+    private ImageButton SMSOKButton;
 
     static actMain instanciaActMain;
 
@@ -175,7 +175,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
      * Botón de acceso a la Configuración
      * Da acceso a la configuración de parámetros personales
      *
-     * @param
+     * @param view vista del botón.
      */
     public void configuration_action_button(View view) {
 
@@ -185,7 +185,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
 
         if (Constants.SHOW_ANIMATION) {
 
-            overridePendingTransition(R.animator.animation2, R.animator.animation1);
+            overridePendingTransition(R.anim.animation2, R.anim.animation1);
 
         }
     }
@@ -194,7 +194,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
      * Botón para volver a casa
      * Activa la opción de volver a casa
      *
-     * @param view
+     * @param view vista del botón.
      */
     public void backtohome_action_button(View view) {
 
@@ -218,7 +218,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
      * Botón para activar el modo ducha
      * Activa el modo ducha
      *
-     * @param view
+     * @param view vista del botón.
      */
     public void showermode_action_button(View view) {
 
@@ -228,7 +228,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
 
         if (Constants.SHOW_ANIMATION) {
 
-            overridePendingTransition(R.animator.animation2, R.animator.animation1);
+            overridePendingTransition(R.anim.animation2, R.anim.animation1);
 
         }
 
@@ -239,7 +239,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
      * Botón para acceder a los contactos familiares
      * Atajo a los contactos familiares
      *
-     * @param view
+     * @param view Vista del botón
      */
     public void familiar_action_button(View view) {
 
@@ -249,7 +249,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
 
         if (Constants.SHOW_ANIMATION) {
 
-            overridePendingTransition(R.animator.animation2, R.animator.animation1);
+            overridePendingTransition(R.anim.animation2, R.anim.animation1);
 
         }
     }
@@ -258,7 +258,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
     /**
      * Envio de los SMS a los familiares
      *
-     * @param view
+     * @param view Vista del botón
      */
     public void sendAvisoSms(View view) {
 
@@ -286,18 +286,14 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
 
         }
 
-        String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
-
-        SmsLauncher miSmsLauncher = new SmsLauncher(TipoAviso.AVISO);
-
-        Boolean hayListaContactos = miSmsLauncher.generateAndSend();
+        Boolean hayListaContactos = new SmsLauncher(TipoAviso.AVISO).generateAndSend();
 
 
         //TODO: mejorar con el control de errores de SMS
 
         //Si se ha mandado algún SMS...
 
-        if ((personasContacto[1].length() + personasContacto[3].length() + personasContacto[5].length()) > 0) {
+        if ( hayListaContactos ) {
 
             actualizarUltimoSMSEnviado(null);
 
@@ -321,14 +317,13 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
                     SMSAlertButton.setBackgroundResource(R.drawable.red_button200);
                 }
             }, Constants.SMS_SENDING_DELAY);
-
         }
     }
 
     /**
      * botón para enviar SMS de tranquilidad (I'm OK)
      *
-     * @param view
+     * @param view Vista del botón
      */
     public void sendAvisoIamOK(View view) {
 
@@ -355,14 +350,14 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
         String[] personasContacto = new AppSharedPreferences().getPersonasContacto();
         SmsLauncher miSmsLauncher = new SmsLauncher(TipoAviso.IAMOK);
 
-        Boolean hayListaContactos = miSmsLauncher.generateAndSend();
+        Boolean hayListaContactos = new SmsLauncher(TipoAviso.IAMOK).generateAndSend();
+
 
         //Si se ha mandado algún SMS...
 
-        if ((personasContacto[1].length() + personasContacto[3].length() + personasContacto[5].length()) > 0) {
+        if ( hayListaContactos ) {
 
             actualizarUltimoSMSEnviado(null);
-
 
             //Avisamos al usuario de que ha enviado el SMS con un sonido
             if (Constants.PLAY_SOUNDS) {
@@ -417,7 +412,7 @@ public class actMain extends FragmentActivity implements AppDialog.AppDialogNeut
 
         if (Constants.SHOW_ANIMATION) {
 
-            overridePendingTransition(R.animator.animation2, R.animator.animation1);
+            overridePendingTransition(R.anim.animation2, R.anim.animation1);
 
         }
 

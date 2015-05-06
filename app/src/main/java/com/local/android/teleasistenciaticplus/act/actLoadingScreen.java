@@ -64,8 +64,8 @@ public class actLoadingScreen extends Activity implements Constants {
 
                 startActivity(mainIntent);
 
-                if (Constants.SHOW_ANIMATION == true) {
-                    overridePendingTransition(R.animator.animation2, R.animator.animation1);
+                if (Constants.SHOW_ANIMATION) {
+                    overridePendingTransition(R.anim.animation2, R.anim.animation1);
                 }
                 // Cerramos la ventana de carga para que salga del BackStack
                 finish();

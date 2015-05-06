@@ -12,15 +12,16 @@ import com.local.android.teleasistenciaticplus.modelo.GlobalData;
 /**
  * Reproduce un sonido a través del método estático play, el cual recibe como
  * parámetro el id del recurso a reproducir
- *
- * @param
+ * Ejemplo de uso desde otros métodos:
+ *   PlaySound.play(R.raw.bienvenido);
  */
 public class PlaySound {
+
 
     /**
      * Constructor
      */
-    public void PlaySound() {}
+    public PlaySound() {}
 
 
     /**
@@ -45,7 +46,6 @@ public class PlaySound {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mp.release();
-                mp = null;
             }
         });
 

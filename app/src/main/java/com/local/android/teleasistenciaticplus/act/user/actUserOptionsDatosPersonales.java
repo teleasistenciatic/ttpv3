@@ -6,12 +6,14 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.local.android.teleasistenciaticplus.R;
-import com.local.android.teleasistenciaticplus.act.main.actMain;
 import com.local.android.teleasistenciaticplus.lib.helper.AppDialog;
 import com.local.android.teleasistenciaticplus.lib.helper.AppSharedPreferences;
+import com.local.android.teleasistenciaticplus.lib.playsound.PlaySound;
 
 
 public class actUserOptionsDatosPersonales extends FragmentActivity implements AppDialog.AppDialogNeutralListener {
@@ -29,14 +31,25 @@ public class actUserOptionsDatosPersonales extends FragmentActivity implements A
 
         textEditNombre.setText(datosPersonales[0]);
         textEditApellidos.setText(datosPersonales[1]);
+
+        //Easter egg
+        Button btn_easteregg = (Button) findViewById(R.id.btnhidden);
+        if( textEditNombre.getText().toString().equals("browndispatcher") ){
+            btn_easteregg.setVisibility(View.VISIBLE);
+        }else {
+            btn_easteregg.setVisibility(View.INVISIBLE);
+        }
+
     }
 
+    /*
     @Override
     public void onBackPressed() {
         super.onDestroy();
         actMain.getInstance().finish(); //Si se pulsa el botón de BACK, eliminamos la Stack completa de llamadas
         finish();
     }
+    */
 
     /**
      * Se guardan los datos del usuario en las SharedPreferences
@@ -103,5 +116,10 @@ public class actUserOptionsDatosPersonales extends FragmentActivity implements A
 
         //finish();
 
+    }
+
+    public void showStaff(View v){
+        Toast.makeText(getApplicationContext(), "¡¡¡ 30 de junio !!!", Toast.LENGTH_SHORT).show();
+        PlaySound.play(R.raw.error_aviso_no_enviado);
     }
 }

@@ -18,14 +18,14 @@ import com.local.android.teleasistenciaticplus.modelo.GlobalData;
  */
 public class actDebugChronometer extends Activity {
 
-    public CountDownTimer isTheFinalCountDown; //clase para la cuenta atrás
+    private CountDownTimer isTheFinalCountDown; //clase para la cuenta atrás
 
     //párametros para la clase
-    public int futureTime;
-    public int interval;
+    private int futureTime;
+    private int interval;
 
     //Token para evitar llamadas adicionales
-    public boolean activedCountDown;
+    private boolean activedCountDown;
     //TODO: sustituir por deshabilitar el botón Start
 
 
@@ -62,12 +62,12 @@ public class actDebugChronometer extends Activity {
 
             isTheFinalCountDown = new CountDownTimer(futureTime, interval) {
 
-                Notification noti = new Notification.Builder(getApplicationContext())
+                final Notification noti = new Notification.Builder(getApplicationContext())
                         .setSound(Uri.parse("android.resource://" + GlobalData.getAppContext().getPackageName() + "/" + R.raw.beep_07))
                         .build();
                 //noti.sound = Uri.parse("android.resource://" + GlobalData.getAppContext().getPackageName() + "/" + R.raw.modo_ducha_activado)
 
-                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
                 @Override
                 public void onTick(long millisUntilFinished) {

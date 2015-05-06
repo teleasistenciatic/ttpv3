@@ -137,8 +137,8 @@ public class actMainDebug extends Activity {
 
     /**
      * Opciones del menú
-     * @param item
-     * @return
+     * @param item Item del menú
+     * @return true o false
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
